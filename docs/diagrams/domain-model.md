@@ -20,7 +20,7 @@ class Cell{}
 class Exporter{}
 
 Importer --- Image : uploads > 
-Filter -- Image : : applies >
+Filter -- Image : : applies >q
 Image -- ConwayGame : played by >
 Image --- ConwayGame : creates <
 Image --l Exporter : saves <
