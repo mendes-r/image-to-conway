@@ -1,4 +1,4 @@
-# image-to-conway
+# Image-to-Conway
 Turn an image into an initial conway's game of life grid... and start living
 
 ## Introduction
@@ -9,27 +9,31 @@ Another functionatity would be to rewind the played game to its original configu
 This possibilty turns this project in a kind of encryption software... a simple one.
 
 ## Technology
-Java will be the chosen language for the backend and frontend.
-The Java Swing framework will be used.
 
-Given the seperation between the UI and the model, a future web-application using other technologies will be always on the table. 
+A C program should use a thresholding image processing algorithm to convert normal images in binary ones.
+
+After that we should be able to use a program written in Java to use the processed image and turn it in to a Conway's Game of Life grid... and play it.
+
+A kind of frontend is still in debate.
 
 ## Requirements
-The following requirements will give a first hint for the type of user stories and functionatilties that need to be answered
 
-- As a user, I want to be able to upload an jpge image.
+The following requirements will give a first hint for the type of user stories and functionalities that need to be answered
+
+- As a user, I want to be able to upload an jpg image.
 - As a user, I want to be able to upload any type of image proportion.
 - As a user, I want to start the game.
 - As a user, I want to be able to stop the game at any moment.
 - As a user, I want to be able to rewind the iterations and return to the original image.
 - As a user, I want to be able to save the image that results of any given number of iterations.
 
+## Possible future new functionalities
 
-##Possible future new functionalities
 As already mentioned, this project could be turned into a web-application.
-Another interesting possibility could be the use of this rearrengement of the pixels to something that ressembles an image compression software.
-Compressing an already compressed file - jpg - can be a strange thing to do, but for the sake of learning it could be tryed.
-At a first glance, this could be done by analysing each iteration and see how much less space it take after using a simple compression method.
+Another interesting possibility could be the use of this rearrangement of the pixels to something that resembles an image compression software.
 
-##Open questions
-Turning a jpeg into a grid of black and white pixels turns the file into something  more "raw". 
+Compressing an already compressed file - jpg - can be a strange thing to do, but for the sake of learning it could be tried.
+
+At a first glance, this could be done by analyzing each iteration and see how much less space it takes after using a simple compression method. 
+
+No information should be lost with the running of the Conway's engine. A pixel in contact with the edges should be somehow recorded.
