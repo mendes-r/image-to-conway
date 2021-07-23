@@ -1,6 +1,7 @@
-package com.mendes;
+package imagetoconway;
 
-import com.mendes.domain.*;
+import imagetoconway.game.*;
+import imagetoconway.utils.GridPrinter;
 
 public class Main {
 
@@ -15,7 +16,7 @@ public class Main {
 
         Grid gameGrid = new Grid(matrix);
         ConwayGame game = new ConwayGame(gameGrid);
-        game.print();
+        GridPrinter.print(gameGrid);
     }
 
 }

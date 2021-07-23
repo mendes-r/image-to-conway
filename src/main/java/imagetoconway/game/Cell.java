@@ -1,4 +1,4 @@
-package com.mendes.domain;
+package imagetoconway.game;
 
 public class Cell{
 

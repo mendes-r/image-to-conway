@@ -1,22 +1,15 @@
-package com.mendes.utils;
+package imagetoconway.utils;
 
-import com.mendes.domain.Grid;
+import imagetoconway.game.Grid;
 
 public class GridPrinter {
 
-    // attributed
-    private Grid grid;
-
-
     // constructor
-    public GridPrinter(Grid grid) {
-        this.grid = grid;
-    }
-
+    private GridPrinter(){}
 
     // business methods
-    public void print() {
-        boolean[][] mask = this.grid.getMask();
+    public static void print(Grid grid) {
+        boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
         for (int i = 0; i < height; i++) {
