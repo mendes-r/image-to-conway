@@ -2,6 +2,6 @@ package imagetoconway.filter;
 
 public interface ImageFilter {
 
-    void convert();
+    void convert(String url, String saveToURL, String fileType);
     
 }

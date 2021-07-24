@@ -1,5 +1,7 @@
 package imagetoconway;
 
+import imagetoconway.filter.BinaryFilter;
+import imagetoconway.filter.GrayScaleFilter;
 import imagetoconway.game.*;
 import imagetoconway.utils.GridPrinter;
 
@@ -15,8 +17,17 @@ public class Main {
         };
 
         Grid gameGrid = new Grid(matrix);
-        ConwayGame game = new ConwayGame(gameGrid);
         GridPrinter.print(gameGrid);
+
+        String url = "/Users/ricardomendes/Developer/Switch/image-to-conway/img/001.png";
+        String saveToURL = "/Users/ricardomendes/Developer/Switch/image-to-conway/img/result/001.png";
+        String fileType = "png";
+
+        GrayScaleFilter filter = new GrayScaleFilter();
+        filter.convert(url, saveToURL, fileType );
+        
+        BinaryFilter biFilter = new BinaryFilter();
+        biFilter.convert(saveToURL, saveToURL, fileType);
     }
 
 }
