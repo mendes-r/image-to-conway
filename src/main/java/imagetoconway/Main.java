@@ -22,12 +22,10 @@ public class Main {
         String url = "/Users/ricardomendes/Developer/Switch/image-to-conway/img/001.png";
         String saveToURL = "/Users/ricardomendes/Developer/Switch/image-to-conway/img/result/001.png";
         String fileType = "png";
-
-        GrayScaleFilter filter = new GrayScaleFilter();
-        filter.convert(url, saveToURL, fileType );
+        short threshold = 100;
         
         BinaryFilter biFilter = new BinaryFilter();
-        biFilter.convert(saveToURL, saveToURL, fileType);
+        biFilter.convert(url, saveToURL, fileType, threshold);
     }
 
 }

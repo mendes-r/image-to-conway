@@ -1,47 +1,37 @@
 package imagetoconway.filter;
 
-import java.io.File;
-import java.io.IOException;
 import java.awt.image.BufferedImage;
 import java.awt.*;
-import javax.imageio.ImageIO;
 
-public class BinaryFilter implements ImageFilter{
+public class BinaryFilter extends ImageFilter{
 
     @Override
-    public void convert(String url, String saveToURL, String fileType) {
-
-        final short threshold = 100; 
+    protected void implementFilter(BufferedImage image, short threshold) {
+        
+        if(threshold > 255) throw new IllegalArgumentException();
+        
+        final short THRESHOLD = threshold; 
         final short WHITE = 255;
         final short BLACK = 0;
 
-        try {
-            // source https://memorynotfound.com/convert-image-grayscale-java/
-            File input = new File(url);
-            System.out.println(input.toPath().toString());
-            BufferedImage image = ImageIO.read(input);
-
-            for (int i = 0; i < image.getHeight(); i++) {
-                for (int j = 0; j < image.getWidth(); j++) {
-                    Color c = new Color(image.getRGB(j, i));
-
-                    if(c.getRed() > threshold){
-                        Color newColor = new Color(WHITE, WHITE, WHITE);
-                        image.setRGB(j, i, newColor.getRGB());
-                    } else {
-                        Color newColor = new Color(BLACK, BLACK, BLACK);
-                        image.setRGB(j, i, newColor.getRGB());
-                    }
+        for (int i = 0; i < image.getHeight(); i++) {
+            for (int j = 0; j < image.getWidth(); j++) {
+                Color color = new Color(image.getRGB(j, i));
+                // first find grayscale equivalent
+                // weighted method, weighs red, green and blue according to their wavelengths
+                int red = (int) (color.getRed() * 0.299);
+                int green = (int) (color.getGreen() * 0.587);
+                int blue = (int) (color.getBlue() * 0.114);
+                // define when a pixel is black or white
+                if((red + green + blue) > THRESHOLD){
+                    Color newColor = new Color(WHITE, WHITE, WHITE);
+                    image.setRGB(j, i, newColor.getRGB());
+                } else {
+                    Color newColor = new Color(BLACK, BLACK, BLACK);
+                    image.setRGB(j, i, newColor.getRGB());
                 }
             }
-
-            File output = new File(saveToURL);
-            ImageIO.write(image, fileType, output); 
-
-        } catch (IOException exception) {
-            exception.getStackTrace();
         }
-        
     }
     
 }
