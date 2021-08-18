@@ -3,16 +3,16 @@ package imagetoconway.game;
 public class Cell{
 
     // attribute
-    private boolean on = false;
+    private boolean alive = false;
 
     // constructor
-    public Cell(int pixelColor) {
-        if (pixelColor == 255) this.on = true;
+    public Cell(boolean alive) {
+        this.alive = alive;
     }
 
     // business methods
-    public boolean getOn() {
-        return this.on;
+    public boolean isAlive() {
+        return this.alive;
     }
     
 }

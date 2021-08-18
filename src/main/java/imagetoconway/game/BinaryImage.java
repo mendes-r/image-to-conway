@@ -7,6 +7,8 @@ import java.io.IOException;
 import javax.imageio.ImageIO;
 import imagetoconway.filter.BinaryFilter;
 import imagetoconway.filter.ImageFilter;
+import imagetoconway.utils.Constants;
+
 import java.awt.image.BufferedImage;
 
 public class BinaryImage {
@@ -24,9 +26,19 @@ public class BinaryImage {
      * 
      * @return
      */
-    boolean[][] toGrid(){
-        //TODO 
-        return null;
+    public boolean[][] toGrid(){
+        int width = this.image.getWidth();
+        int height = this.image.getHeight();
+        boolean[][] grid = new boolean[height][width];
+        for(int i = 0; i < height; i++){
+            for(int j = 0; j < width; j++){
+                Color color = new Color(image.getRGB(j, i));
+                if(color.getRed() == Constants.BLACK_RGB){
+                    grid[i][j] = true;
+                }
+            }
+        }
+        return grid;
     }
 
     /**

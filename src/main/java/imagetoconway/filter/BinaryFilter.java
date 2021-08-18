@@ -1,6 +1,9 @@
 package imagetoconway.filter;
 
 import java.awt.image.BufferedImage;
+
+import imagetoconway.utils.Constants;
+
 import java.awt.*;
 
 public class BinaryFilter extends ImageFilter{
@@ -12,9 +15,6 @@ public class BinaryFilter extends ImageFilter{
     protected void implementFilter(BufferedImage image, short threshold) {
         
         if(threshold > 255) throw new IllegalArgumentException("Threshold must be between 0 - 255");
-        
-        final short WHITE = 255;
-        final short BLACK = 0;
 
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
@@ -26,10 +26,10 @@ public class BinaryFilter extends ImageFilter{
                 int blue = (int) (color.getBlue() * 0.114);
                 // define when a pixel is black or white
                 if((red + green + blue) > threshold){
-                    Color newColor = new Color(WHITE, WHITE, WHITE);
+                    Color newColor = new Color(Constants.WHITE_RGB, Constants.WHITE_RGB, Constants.WHITE_RGB);
                     image.setRGB(j, i, newColor.getRGB());
                 } else {
-                    Color newColor = new Color(BLACK, BLACK, BLACK);
+                    Color newColor = new Color(Constants.BLACK_RGB, Constants.BLACK_RGB, Constants.BLACK_RGB);
                     image.setRGB(j, i, newColor.getRGB());
                 }
             }
