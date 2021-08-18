@@ -5,12 +5,14 @@ import java.awt.*;
 
 public class BinaryFilter extends ImageFilter{
 
+    /**
+     * Specific implementation for a binary filter given the ImageFilter template.
+     */
     @Override
     protected void implementFilter(BufferedImage image, short threshold) {
         
-        if(threshold > 255) throw new IllegalArgumentException();
+        if(threshold > 255) throw new IllegalArgumentException("Threshold must be between 0 - 255");
         
-        final short THRESHOLD = threshold; 
         final short WHITE = 255;
         final short BLACK = 0;
 
@@ -23,7 +25,7 @@ public class BinaryFilter extends ImageFilter{
                 int green = (int) (color.getGreen() * 0.587);
                 int blue = (int) (color.getBlue() * 0.114);
                 // define when a pixel is black or white
-                if((red + green + blue) > THRESHOLD){
+                if((red + green + blue) > threshold){
                     Color newColor = new Color(WHITE, WHITE, WHITE);
                     image.setRGB(j, i, newColor.getRGB());
                 } else {

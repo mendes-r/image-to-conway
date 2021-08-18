@@ -8,7 +8,7 @@ public class GridPrinter {
     private GridPrinter(){}
 
     // business methods
-    public static void print(Grid grid) {
+    public static void printToCLI(Grid grid) {
         boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
