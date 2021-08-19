@@ -8,7 +8,6 @@ import javax.imageio.ImageIO;
 public abstract class ImageFilter {
 
     /**
-     * Image converter.
      * Template for an image filter.
      * 
      * @param url image location url
@@ -20,17 +19,20 @@ public abstract class ImageFilter {
         try {
             // source https://memorynotfound.com/convert-image-grayscale-java/
             File input = new File(url);
-            System.out.println(input.toPath().toString());
             BufferedImage image = ImageIO.read(input);
-
             implementFilter(image);
             return image;
-
+            
         } catch (IOException exception) {
             exception.getStackTrace();
             throw new IllegalArgumentException("Image not found. Invalid URL");
         }
     }
     
+    /**
+     * Specific implementation for each subclass of this class.
+     * 
+     * @param image
+     */
     protected abstract void implementFilter(BufferedImage image);
 }

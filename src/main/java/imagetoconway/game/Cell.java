@@ -2,15 +2,23 @@ package imagetoconway.game;
 
 public class Cell{
 
-    // attribute
+    //attribute
     private boolean alive = false;
 
-    // constructor
+    /**
+     * Sole constructor.
+     * 
+     * @param alive boolean
+     */
     public Cell(boolean alive) {
         this.alive = alive;
     }
 
-    // business methods
+    /**
+     * Get value of the Cell's instance.
+     * 
+     * @return boolean
+     */
     public boolean isAlive() {
         return this.alive;
     }

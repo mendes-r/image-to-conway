@@ -3,7 +3,7 @@ package imagetoconway;
 import imagetoconway.filter.BinaryFilter;
 import imagetoconway.filter.ImageFilter;
 import imagetoconway.game.*;
-import imagetoconway.utils.GridPrinter;
+import imagetoconway.utils.GridUtils;
 
 public class Main {
 
@@ -15,12 +15,12 @@ public class Main {
         short threshold = 100;
 
         ImageFilter filter = new BinaryFilter(threshold);
-        BinaryImage image = new BinaryImage(url, filter);
-        image.save(saveToURL, fileType);
 
-        Grid grid = new Grid(image.toGrid());
+        Grid grid = new Grid(url, filter);
 
-        GridPrinter.printToCLI(grid);
+        GridUtils.printToCLI(grid);
+
+        GridUtils.saveAsImage(grid, saveToURL, fileType);
     }
 
 }
