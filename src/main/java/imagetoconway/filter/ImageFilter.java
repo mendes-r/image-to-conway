@@ -3,7 +3,6 @@ package imagetoconway.filter;
 import java.io.File;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
-import java.awt.*;
 import javax.imageio.ImageIO;
 
 public abstract class ImageFilter {
@@ -17,19 +16,15 @@ public abstract class ImageFilter {
      * @param fileType file type, e.g. jpg or png
      * @param threshold used in some filter, e.g. binary filter need to know when a pixel is black or white
      */
-    public final BufferedImage convert(String url, short threshold){
+    public final BufferedImage convert(String url){
         try {
             // source https://memorynotfound.com/convert-image-grayscale-java/
             File input = new File(url);
             System.out.println(input.toPath().toString());
             BufferedImage image = ImageIO.read(input);
 
-            implementFilter(image, threshold);
+            implementFilter(image);
             return image;
-
-            
-            /* File output = new File(saveToURL);
-            ImageIO.write(image, fileType, output);  */
 
         } catch (IOException exception) {
             exception.getStackTrace();
@@ -37,5 +32,5 @@ public abstract class ImageFilter {
         }
     }
     
-    protected abstract void implementFilter(BufferedImage image, short threshold);
+    protected abstract void implementFilter(BufferedImage image);
 }

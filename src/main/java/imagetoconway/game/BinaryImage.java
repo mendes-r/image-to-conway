@@ -5,7 +5,6 @@ import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
-import imagetoconway.filter.BinaryFilter;
 import imagetoconway.filter.ImageFilter;
 import imagetoconway.utils.Constants;
 
@@ -15,16 +14,20 @@ public class BinaryImage {
 
     private final BufferedImage image;
     
-    public BinaryImage(String url, short threshold){
-        ImageFilter binaryFilter = new BinaryFilter();
-        image = binaryFilter.convert(url, threshold);
+    /**
+     * Sole constructor.
+     * 
+     * @param url path to image
+     */
+    public BinaryImage(String url, ImageFilter filter){
+        image = filter.convert(url);
     }
 
     /**
      * Get a boolean matrix from the binary image.
      * black pixel is true, white pixel is false
      * 
-     * @return
+     * @return a boolean matrix; a black pixel corresponds to a 'true'
      */
     public boolean[][] toGrid(){
         int width = this.image.getWidth();
@@ -42,8 +45,10 @@ public class BinaryImage {
     }
 
     /**
-     * Save image
+     * Save image.
      * 
+     * @param saveToURL path to were we want to save the image
+     * @param fileType file tipe
      */
     public void save(String saveToURL, String fileType) {
         try{
