@@ -13,7 +13,7 @@ public class Grid {
     private final int width;
 
     /**
-     * Sole constructor.
+     * Constructor that accepts an image as input.
      * 
      * @param url path to image
      * @param filter type of binary filter
@@ -24,6 +24,27 @@ public class Grid {
         this.height = image.getHeight();
         this.width = image.getWidth();
         this.cells = imageToCells(image, this.height, this.width);
+    }
+
+    /**
+     * Constructor that accepts a mask.
+     * 
+     * @param mask boolean 2D array
+     */
+    public Grid(boolean[][] mask){
+        if(mask == null) throw new NullPointerException();
+        if(isARectangle(mask)) throw new IllegalArgumentException("The mask must have a rectangular shape");
+        this.height = mask.length;
+        this.width = mask[0].length;
+        Cell[][] tempCells = new Cell[height][width];
+
+        for (int row = 0; row < this.height; row++) {
+            for (int col = 0; col < this.width; col++) {
+                tempCells[row][col] = new Cell(mask[row][col]);
+            }
+         }
+        
+        this.cells = tempCells;
     }
 
     /**
@@ -67,5 +88,24 @@ public class Grid {
         return mask;
     }
 
-    
+    /**
+     * Confirms that a given matrix is in the shape of a rectangle.
+     * Squares are allowed
+     * 
+     * @param matrix
+     * @return
+     */
+    private boolean isARectangle(boolean[][] matrix){
+        boolean flag = true;
+        int height = matrix.length;
+        int firstRowLength = matrix[0].length;
+
+        for(int row = 1; row < height && flag; row++){
+            if(matrix[row].length != firstRowLength){
+                flag = false;
+            }
+        }
+
+        return flag;
+    }
 }
