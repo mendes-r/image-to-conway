@@ -1,4 +1,4 @@
-package imagetoconway.filter;
+package image.to.conway.filter;
 
 import java.io.File;
 import java.io.IOException;

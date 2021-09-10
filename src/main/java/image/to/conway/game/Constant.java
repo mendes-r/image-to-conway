@@ -1,4 +1,4 @@
-package imagetoconway.game;
+package image.to.conway.game;
 
 public final class Constant {
 

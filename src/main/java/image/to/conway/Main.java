@@ -1,9 +1,9 @@
-package imagetoconway;
+package image.to.conway;
 
-import imagetoconway.filter.BinaryFilter;
-import imagetoconway.filter.ImageFilter;
-import imagetoconway.game.*;
-import imagetoconway.utils.GridUtils;
+import image.to.conway.filter.BinaryFilter;
+import image.to.conway.filter.ImageFilter;
+import image.to.conway.game.*;
+import image.to.conway.utils.GridUtils;
 
 public class Main {
 

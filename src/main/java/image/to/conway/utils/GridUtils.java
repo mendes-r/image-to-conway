@@ -1,7 +1,7 @@
-package imagetoconway.utils;
+package image.to.conway.utils;
 
-import imagetoconway.game.Constant;
-import imagetoconway.game.Grid;
+import image.to.conway.game.Constant;
+import image.to.conway.game.Grid;
 
 import java.awt.image.BufferedImage;
 import java.awt.*;

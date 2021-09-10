@@ -1,9 +1,9 @@
-package imagetoconway.game;
+package image.to.conway.game;
 
 import java.awt.image.BufferedImage;
 import java.awt.*;
 
-import imagetoconway.filter.ImageFilter;
+import image.to.conway.filter.ImageFilter;
 
 public class Grid {
 
