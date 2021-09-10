@@ -1,4 +1,4 @@
-package image.to.conway.filter;
+package image.to.conway.service;
 
 import java.awt.image.BufferedImage;
 

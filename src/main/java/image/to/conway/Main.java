@@ -1,7 +1,7 @@
 package image.to.conway;
 
-import image.to.conway.filter.BinaryFilter;
-import image.to.conway.filter.ImageFilter;
+import image.to.conway.service.BinaryFilter;
+import image.to.conway.service.ImageFilter;
 import image.to.conway.game.*;
 import image.to.conway.utils.GridUtils;
 

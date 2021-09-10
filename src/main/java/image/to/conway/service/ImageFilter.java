@@ -1,4 +1,4 @@
-package image.to.conway.filter;
+package image.to.conway.service;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,9 +11,6 @@ public abstract class ImageFilter {
      * Template for an image filter.
      * 
      * @param url image location url
-     * @param saveToURL image output in a 'save as' style
-     * @param fileType file type, e.g. jpg or png
-     * @param threshold used in some filter, e.g. binary filter need to know when a pixel is black or white
      */
     public final BufferedImage convert(String url){
         try {
@@ -32,7 +29,7 @@ public abstract class ImageFilter {
     /**
      * Specific implementation for each subclass of this class.
      * 
-     * @param image
+     * @param image BufferedImage instance
      */
     protected abstract void implementFilter(BufferedImage image);
 }
