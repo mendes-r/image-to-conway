@@ -30,7 +30,7 @@ public class Game {
      * Game logic with the following rules:
      * 1. Any live cell with two or three live neighbours survives;
      * 2. Any dead cell with three live neighbours becomes a live cell;
-     * 3. All other live cells die in the next generation. Similarly, all other dead cells stay dead.
+     * 3. All other living cells die in the next generation. Similarly, all other dead cells stay dead.
      * source "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules"
      */
     public void playNextIteration() {

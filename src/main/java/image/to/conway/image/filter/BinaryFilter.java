@@ -1,6 +1,6 @@
 package image.to.conway.image.filter;
 
-import image.to.conway.game.Constant;
+import image.to.conway.constant.Constant;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;

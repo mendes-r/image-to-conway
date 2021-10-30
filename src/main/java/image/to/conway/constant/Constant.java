@@ -1,4 +1,4 @@
-package image.to.conway.game;
+package image.to.conway.constant;
 
 public final class Constant {
 
@@ -7,8 +7,8 @@ public final class Constant {
 
     /**
      * Sole constructor.
-     *
      */
-    private Constant(){}
+    private Constant() {
+    }
 
 }

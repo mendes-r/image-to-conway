@@ -1,6 +1,6 @@
 package image.to.conway.service;
 
-import image.to.conway.game.Constant;
+import image.to.conway.constant.Constant;
 import image.to.conway.game.Grid;
 
 import javax.imageio.ImageIO;
@@ -13,6 +13,11 @@ public class GridService {
 
     private final Grid grid;
 
+    /**
+     * Sole constructor
+     *
+     * @param grid Grid instance
+     */
     public GridService(Grid grid) {
         this.grid = grid;
     }
