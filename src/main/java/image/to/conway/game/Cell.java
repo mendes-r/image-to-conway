@@ -1,13 +1,12 @@
 package image.to.conway.game;
 
-public class Cell{
+public class Cell {
 
-    //attribute
-    private boolean alive = false;
+    private final boolean alive;
 
     /**
      * Sole constructor.
-     * 
+     *
      * @param alive boolean
      */
     public Cell(boolean alive) {
@@ -16,11 +15,11 @@ public class Cell{
 
     /**
      * Get value of the Cell's instance.
-     * 
+     *
      * @return boolean
      */
     public boolean isAlive() {
         return this.alive;
     }
-    
+
 }

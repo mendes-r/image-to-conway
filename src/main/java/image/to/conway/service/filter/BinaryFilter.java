@@ -1,28 +1,26 @@
-package image.to.conway.service;
-
-import java.awt.image.BufferedImage;
+package image.to.conway.service.filter;
 
 import image.to.conway.game.Constant;
 
 import java.awt.*;
+import java.awt.image.BufferedImage;
 
-public class BinaryFilter extends ImageFilter{
+public class BinaryFilter extends ImageFilter {
 
-    private short threshold;
+    private final short threshold;
 
     /**
      * Sole constructor.
-     * 
-     * @param threshold
+     *
+     * @param threshold limit that defines what is black and what is white
      */
-    public BinaryFilter(short threshold){
-        if(threshold > 255 || threshold < 0) throw new IllegalArgumentException("Threshold must be between 0 - 255");
+    public BinaryFilter(short threshold) {
+        if (threshold > 255 || threshold < 0) throw new IllegalArgumentException("Threshold must be between 0 - 255");
         this.threshold = threshold;
     }
 
     /**
      * Specific implementation for a binary filter given the ImageFilter template.
-     * 
      */
     @Override
     protected void implementFilter(BufferedImage image) {
@@ -36,7 +34,7 @@ public class BinaryFilter extends ImageFilter{
                 int green = (int) (color.getGreen() * 0.587);
                 int blue = (int) (color.getBlue() * 0.114);
                 // define when a pixel is black or white
-                if((red + green + blue) > this.threshold){
+                if ((red + green + blue) > this.threshold) {
                     Color newColor = new Color(Constant.WHITE_RGB, Constant.WHITE_RGB, Constant.WHITE_RGB);
                     image.setRGB(j, i, newColor.getRGB());
                 } else {
@@ -46,5 +44,5 @@ public class BinaryFilter extends ImageFilter{
             }
         }
     }
-    
+
 }

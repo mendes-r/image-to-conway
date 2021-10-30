@@ -3,23 +3,23 @@ package image.to.conway.utils;
 import image.to.conway.game.Constant;
 import image.to.conway.game.Grid;
 
-import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.awt.*;
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 
 public final class GridUtils {
 
     /**
      * Sole constructor.
-     * 
      */
-    private GridUtils(){}
+    private GridUtils() {
+    }
 
     /**
      * Prints a given grid to the CLI.
-     * 
+     *
      * @param grid
      */
     public static void printToCLI(Grid grid) {
@@ -33,7 +33,7 @@ public final class GridUtils {
                 } else {
                     System.out.print("o ");
                 }
-                
+
             }
             System.out.print("\n");
         }
@@ -41,9 +41,8 @@ public final class GridUtils {
 
     /**
      * Save cells as a binary image.
-     * 
      */
-    public static void saveAsImage(Grid grid, String saveToURL, String fileType){
+    public static void saveAsImage(Grid grid, String saveToURL, String fileType) {
         boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
@@ -51,7 +50,7 @@ public final class GridUtils {
 
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
-                if(mask[i][j]){
+                if (mask[i][j]) {
                     Color black = new Color(Constant.BLACK_RGB, Constant.BLACK_RGB, Constant.BLACK_RGB);
                     image.setRGB(j, i, black.getRGB());
                 } else {
@@ -61,10 +60,10 @@ public final class GridUtils {
             }
         }
 
-        try{
+        try {
             File output = new File(saveToURL);
             ImageIO.write(image, fileType, output);
-        } catch(IOException exception) {
+        } catch (IOException exception) {
             exception.getStackTrace();
         }
     }
