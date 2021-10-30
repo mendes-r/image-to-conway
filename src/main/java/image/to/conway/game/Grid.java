@@ -1,41 +1,19 @@
 package image.to.conway.game;
 
-import image.to.conway.service.filter.ImageFilter;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
-
 public class Grid {
 
     private final Cell[][] cells;
     private final int height;
     private final int width;
 
-    // TODO: instead of two constructors, make static factory methods that have a more descriptive name
-    // TODO: or a builder that can accept a multitude of filters
-
     /**
-     * Constructor that accepts an image as input.
-     *
-     * @param url    path to image
-     * @param filter type of binary filter
-     */
-    public Grid(String url, ImageFilter filter) {
-        if (url == null || filter == null) throw new NullPointerException();
-        BufferedImage image = filter.convert(url);
-        this.height = image.getHeight();
-        this.width = image.getWidth();
-        this.cells = imageToCells(image, this.height, this.width);
-    }
-
-    /**
-     * Constructor that accepts a mask.
+     * Sole constructor that accepts a mask.
      *
      * @param mask boolean 2D array
      */
     public Grid(boolean[][] mask) {
         if (mask == null) throw new NullPointerException();
-        if (isARectangle(mask)) throw new IllegalArgumentException("The mask must have a rectangular shape");
+        if (!isARectangle(mask)) throw new IllegalArgumentException("The mask must have a rectangular shape");
         this.height = mask.length;
         this.width = mask[0].length;
         Cell[][] tempCells = new Cell[height][width];
@@ -47,30 +25,6 @@ public class Grid {
         }
 
         this.cells = tempCells;
-    }
-
-    /**
-     * Transforms a binary image into a matrix of Cells.
-     * Each Cell has an instance variable that tells if the corresponding image pixel is black or white.
-     *
-     * @param image  BufferedImage
-     * @param height of the image
-     * @param width  of the image
-     * @return a grid of Cell instances
-     */
-    private Cell[][] imageToCells(BufferedImage image, int height, int width) {
-        Cell[][] tempCells = new Cell[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Color color = new Color(image.getRGB(j, i));
-                if (color.getRed() == Constant.BLACK_RGB) {
-                    tempCells[i][j] = new Cell(true);
-                } else {
-                    tempCells[i][j] = new Cell(false);
-                }
-            }
-        }
-        return tempCells;
     }
 
     /**
@@ -110,4 +64,5 @@ public class Grid {
 
         return flag;
     }
+
 }

@@ -1,4 +1,4 @@
-package image.to.conway.service.scaler;
+package image.to.conway.image.scaler;
 
 import java.awt.image.BufferedImage;
 

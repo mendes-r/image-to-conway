@@ -1,4 +1,4 @@
-package image.to.conway.service.filter;
+package image.to.conway.image.filter;
 
 import image.to.conway.game.Constant;
 

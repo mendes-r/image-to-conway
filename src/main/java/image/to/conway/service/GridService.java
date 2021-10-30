@@ -1,4 +1,4 @@
-package image.to.conway.utils;
+package image.to.conway.service;
 
 import image.to.conway.game.Constant;
 import image.to.conway.game.Grid;
@@ -9,41 +9,22 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public final class GridUtils {
+public class GridService {
 
-    /**
-     * Sole constructor.
-     */
-    private GridUtils() {
+    private final Grid grid;
+
+    public GridService(Grid grid) {
+        this.grid = grid;
     }
 
     /**
-     * Prints a given grid to the CLI.
+     * Save mask as a binary image.
      *
-     * @param grid
+     * @param saveToURL where to save the image
+     * @param fileType  file type
      */
-    public static void printToCLI(Grid grid) {
-        boolean[][] mask = grid.getMask();
-        int height = mask.length;
-        int width = mask[0].length;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (mask[i][j]) {
-                    System.out.print("x ");
-                } else {
-                    System.out.print("o ");
-                }
-
-            }
-            System.out.print("\n");
-        }
-    }
-
-    /**
-     * Save cells as a binary image.
-     */
-    public static void saveAsImage(Grid grid, String saveToURL, String fileType) {
-        boolean[][] mask = grid.getMask();
+    public void saveAsImage(String saveToURL, String fileType) {
+        boolean[][] mask = this.grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
         BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_BYTE_BINARY);
@@ -67,6 +48,5 @@ public final class GridUtils {
             exception.getStackTrace();
         }
     }
-
 
 }
