@@ -12,8 +12,7 @@ public class Grid {
      * @param mask boolean 2D array
      */
     public Grid(boolean[][] mask) {
-        if (mask == null) throw new NullPointerException();
-        if (!isARectangle(mask)) throw new IllegalArgumentException("The mask must have a rectangular shape");
+        if (mask == null || !isARectangle(mask)) throw new IllegalArgumentException("The mask must have a rectangular shape");
         this.height = mask.length;
         this.width = mask[0].length;
         Cell[][] tempCells = new Cell[height][width];
