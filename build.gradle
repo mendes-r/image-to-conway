@@ -5,17 +5,30 @@
 plugins {
     id 'java'
     id 'maven-publish'
+//    id 'io.quarkus'
 }
 
 repositories {
     mavenLocal()
     maven {
-        url = 'http://repo.maven.apache.org/maven2'
+        url = 'https://repo.maven.apache.org/maven2'
+//        allowInsecureProtocol = true
     }
+    mavenCentral()
 }
 
 dependencies {
-    testCompile 'junit:junit:4.11'
+//    implementation(enforcedPlatform("io.quarkus.platform:quarkus-bom:2.1.0.Final"))
+//    implementation 'io.quarkus:quarkus-arc'
+//    implementation 'io.quarkus:quarkus-resteasy'
+//    testImplementation 'io.quarkus:quarkus-junit5'
+//    testImplementation 'io.rest-assured:rest-assured'
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.1'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.1'
+}
+
+test {
+    useJUnitPlatform()
 }
 
 group = 'com.mendes.app'
@@ -23,14 +36,3 @@ version = '1.0-SNAPSHOT'
 description = 'image-to-conway'
 sourceCompatibility = '1.8'
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            from(components.java)
-        }
-    }
-}
-
-tasks.withType(JavaCompile) {
-    options.encoding = 'UTF-8'
-}

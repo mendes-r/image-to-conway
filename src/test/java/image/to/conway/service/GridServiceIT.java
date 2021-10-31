@@ -4,12 +4,12 @@ import image.to.conway.game.Grid;
 import image.to.conway.image.filter.BinaryFilter;
 import image.to.conway.image.filter.ImageFilter;
 import image.to.conway.utils.MaskUtils;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class GridServiceIT {
 
@@ -22,7 +22,7 @@ public class GridServiceIT {
     public void saveAnImage() {
         // arrange
         File oldFile = new File(saveToURL);
-        if(oldFile.exists()) oldFile.delete();
+        if (oldFile.exists()) oldFile.delete();
 
         short threshold = 100;
         ImageFilter filter = new BinaryFilter(threshold);

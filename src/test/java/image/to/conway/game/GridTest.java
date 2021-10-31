@@ -1,12 +1,12 @@
 package image.to.conway.game;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GridTest {
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void isNotRectangle() {
         // arrange
         boolean[][] mask = {
@@ -15,17 +15,17 @@ public class GridTest {
                 {true, true, false}
         };
 
-        // act
-        new Grid(mask);
+        // act and assert
+        assertThrows(IllegalArgumentException.class, () -> new Grid(mask));
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test()
     public void isNotRectangleNullInput() {
         // arrange
         boolean[][] mask = null;
 
-        // act
-        new Grid(mask);
+        // act and assert
+        assertThrows(IllegalArgumentException.class, () -> new Grid(mask));
     }
 
     @Test()
@@ -44,7 +44,7 @@ public class GridTest {
         // assert
         for (int i = 0; i < result.length; i++) {
             for (int j = 0; j < result[i].length; j++) {
-                assertTrue(result[i][j] == mask[i][j]);
+                assertEquals(result[i][j], mask[i][j]);
             }
         }
     }
