@@ -33,8 +33,31 @@ public class BilinearScaler implements ImageScaler {
 
     }
 
-    float bilinearInterpolation() {
-        return 0.0f;
+    /**
+     * Bilinear interpolation
+     * source: https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
+     *
+     * A - - X - - B
+     *       |
+     *       Z
+     *       |
+     * C - - Y - - D
+     *
+     * @param aValue Value of point A
+     * @param aCoord Coordinates of point A
+     * @param bValue Value of point B
+     * @param bCoord Coordinates of point B
+     * @param cValue Value of point C
+     * @param cCoord Coordinates of point C
+     * @param dValue Value of point D
+     * @param dCoord Coordinates of point D
+     * @param zCoord Coordinates of point Z
+     * @return Value of point Z
+     */
+    float bilenearInterpolation(int aValue, int[] aCoord, int bValue, int[] bCoord, int cValue, int[] cCoord, int dValue, int[] dCoord, int[] zCoord) {
+        int xValue = Math.round(linearInterpolation(aValue, aCoord[0], bValue, bCoord[0], zCoord[0]));
+        int yValue = Math.round(linearInterpolation(cValue, cCoord[0], dValue, dCoord[0], zCoord[0]));
+        return linearInterpolation(xValue, aCoord[1], yValue, cCoord[1], zCoord[1]);
     }
 
     /**
@@ -50,21 +73,6 @@ public class BilinearScaler implements ImageScaler {
      */
     float linearInterpolation(int aValue, int aCoord, int bValue, int bCoord, int xCoord) {
         return (aValue * (((float) bCoord - xCoord) / (bCoord - aCoord)) + bValue * (((float) xCoord - aCoord) / (bCoord - aCoord)));
-    }
-
-    Color colorLinearInterpolation(Color aColor, int aCoord, Color bColor, int bCoord, int xCoord) {
-        int aRed = aColor.getRed();
-        int bRed = bColor.getRed();
-        int aGreen = aColor.getGreen();
-        int bGreen = bColor.getGreen();
-        int aBlue = aColor.getBlue();
-        int bBlue = bColor.getBlue();
-
-        int xRed = Math.round(linearInterpolation(aRed, aCoord, bRed, bCoord, xCoord));
-        int xGreen = Math.round(linearInterpolation(aGreen, aCoord, bGreen, bCoord, xCoord));
-        int xBlue = Math.round(linearInterpolation(aBlue, aCoord, bBlue, bCoord, xCoord));
-
-        return new Color(xRed, xGreen, xBlue);
     }
 
 }
