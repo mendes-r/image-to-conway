@@ -3,6 +3,7 @@ package image.to.conway.service;
 import image.to.conway.game.Grid;
 import image.to.conway.image.filter.BinaryFilter;
 import image.to.conway.image.filter.ImageFilter;
+import image.to.conway.utils.ImageUtils;
 import image.to.conway.utils.MaskUtils;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +27,8 @@ public class GridServiceIT {
 
         short threshold = 100;
         ImageFilter filter = new BinaryFilter(threshold);
-        BufferedImage image = filter.convert(url);
+        BufferedImage image = ImageUtils.url2Image(url);
+        image = filter.filter(image);
 
         // act
         boolean[][] mask = MaskUtils.imageToMask(image);

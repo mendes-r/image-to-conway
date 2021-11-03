@@ -1,9 +1,12 @@
 package image.to.conway;
 
 import image.to.conway.game.Grid;
-import image.to.conway.service.GridService;
 import image.to.conway.image.filter.BinaryFilter;
 import image.to.conway.image.filter.ImageFilter;
+import image.to.conway.image.scaler.BilinearScale;
+import image.to.conway.image.scaler.ImageScale;
+import image.to.conway.service.GridService;
+import image.to.conway.utils.ImageUtils;
 import image.to.conway.utils.MaskUtils;
 
 import java.awt.image.BufferedImage;
@@ -19,8 +22,12 @@ public class Main {
         String fileType = "jpg";
         short threshold = 100;
 
+        ImageScale scaler = new BilinearScale();
         ImageFilter filter = new BinaryFilter(threshold);
-        BufferedImage image = filter.convert(url);
+        BufferedImage image = ImageUtils.url2Image(url);
+        image = scaler.scale(image, 2, 2);
+        filter.filter(image);
+
         // more filter and scalers here
 
         boolean[][] mask = MaskUtils.imageToMask(image);

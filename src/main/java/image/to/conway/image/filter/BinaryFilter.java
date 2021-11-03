@@ -5,7 +5,7 @@ import image.to.conway.constant.Constant;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BinaryFilter extends ImageFilter {
+public class BinaryFilter implements ImageFilter {
 
     private final short threshold;
 
@@ -23,7 +23,9 @@ public class BinaryFilter extends ImageFilter {
      * Specific implementation for a binary filter given the ImageFilter template.
      */
     @Override
-    protected void implementFilter(BufferedImage image) {
+    public BufferedImage filter(BufferedImage image) {
+
+        BufferedImage newImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
 
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
@@ -36,13 +38,14 @@ public class BinaryFilter extends ImageFilter {
                 // define when a pixel is black or white
                 if ((red + green + blue) > this.threshold) {
                     Color newColor = new Color(Constant.WHITE_RGB, Constant.WHITE_RGB, Constant.WHITE_RGB);
-                    image.setRGB(j, i, newColor.getRGB());
+                    newImage.setRGB(j, i, newColor.getRGB());
                 } else {
                     Color newColor = new Color(Constant.BLACK_RGB, Constant.BLACK_RGB, Constant.BLACK_RGB);
-                    image.setRGB(j, i, newColor.getRGB());
+                    newImage.setRGB(j, i, newColor.getRGB());
                 }
             }
         }
+        return newImage;
     }
 
 }
