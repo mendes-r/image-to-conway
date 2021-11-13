@@ -11,15 +11,11 @@ import java.io.IOException;
 
 public class GridService {
 
-    private final Grid grid;
 
     /**
      * Sole constructor
-     *
-     * @param grid Grid instance
      */
-    public GridService(Grid grid) {
-        this.grid = grid;
+    public GridService() {
     }
 
     /**
@@ -28,8 +24,8 @@ public class GridService {
      * @param saveToURL where to save the image
      * @param fileType  file type
      */
-    public void saveAsImage(String saveToURL, String fileType) {
-        boolean[][] mask = this.grid.getMask();
+    public void saveAsImage(Grid grid, String saveToURL, String fileType) {
+        boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
         BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_BYTE_BINARY);

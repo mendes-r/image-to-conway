@@ -1,9 +1,17 @@
 package image.to.conway.game;
 
+import image.to.conway.constant.Constant;
+
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
+
 public class Game {
 
-    private final int iterationCount = 0;
     //attribute
+    private int iterationCount = 0;
     private Grid grid;
 
     /**
@@ -47,6 +55,16 @@ public class Game {
             }
         }
         this.grid = new Grid(newMask);
+        this.iterationCount ++;
+    }
+
+    /**
+     * Returns a copy of the grid.
+     *
+     * @return Grid instance
+     */
+    public Grid getGrid() {
+        return new Grid(this.grid.getMask());
     }
 
     /**

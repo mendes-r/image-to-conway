@@ -27,8 +27,8 @@ public class BinaryFilter implements ImageFilter {
 
         BufferedImage newImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
 
-        for (int i = 0; i < image.getHeight(); i++) {
-            for (int j = 0; j < image.getWidth(); j++) {
+        for (int i = 0; i < image.getHeight() -1 ; i++) {
+            for (int j = 0; j < image.getWidth() - 1; j++) {
                 Color color = new Color(image.getRGB(j, i));
                 // first find grayscale equivalent
                 // weighted method, weighs red, green and blue according to their wavelengths

@@ -8,6 +8,11 @@ public class BilinearScale implements ImageScale {
     /**
      * Scale image using bilinear interpolation.
      * source: https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
+     * A - - X - - B
+     * - - - + - - -
+     * - - - Z - - -
+     * - - - + - - -
+     * C - - Y - - D
      *
      * @param originalImg Image
      * @param scaleX      scale magnitude in the x-axis
@@ -15,37 +20,30 @@ public class BilinearScale implements ImageScale {
      */
     public BufferedImage scale(BufferedImage originalImg, float scaleX, float scaleY) {
 
-        // Basically if you want to reduce 600x600 to 30x30,
-        // you first reduce to 300x300, then 150x150, then 75x75,
-        // then 38x38, and only then use bilinear to reduce to 30x30.
-        int oldWidth = originalImg.getWidth();
-        int newWidth = (int) (oldWidth * scaleX);
-        int oldHeight = originalImg.getHeight();
-        int newHeight = (int) (oldHeight * scaleY);
+        int originalWidth = originalImg.getWidth();
+        int newWidth = (int) (originalWidth * scaleX);
+        int originalHeight = originalImg.getHeight();
+        int newHeight = (int) (originalHeight * scaleY);
 
-        BufferedImage newImg = new BufferedImage(newWidth, newHeight, originalImg.getType());
+        BufferedImage newImage = new BufferedImage(newWidth, newHeight, originalImg.getType());
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
 
                 int[] zCoord = {x, y};
 
-                // get location of the nearest old pixels
-                int aCoordXOld = (int) ((float) x / newWidth * oldWidth);
-                int aCoordYOld = (int) ((float) y / newHeight * oldHeight);
+                // get location of the nearest pixels in the original image
+                int aCoordXOld = (int) ((float) x / newWidth * originalWidth);
+                int aCoordYOld = (int) ((float) y / newHeight * originalHeight);
 
-                // TODO Bug here: is always [0, 0]
-                int aCoordXOldPlusOne;
-                if (aCoordXOld + 1 > oldWidth) {
-                    aCoordXOldPlusOne = aCoordXOld + 1;
-                } else {
+                // be sure that the index is not out of bound
+                int aCoordXOldPlusOne = aCoordXOld + 1;
+                if (aCoordXOld + 1 <= originalWidth) {
                     aCoordXOldPlusOne = aCoordXOld;
                 }
 
-                int aCoordYOldPlusOne;
-                if (aCoordYOld + 1 > oldHeight) {
-                    aCoordYOldPlusOne = aCoordYOld + 1;
-                } else {
+                int aCoordYOldPlusOne = aCoordYOld + 1;
+                if (aCoordYOld + 1 <= originalHeight) {
                     aCoordYOldPlusOne = aCoordYOld;
                 }
 
@@ -54,22 +52,22 @@ public class BilinearScale implements ImageScale {
                 Color cValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOldPlusOne));
                 Color dValue = new Color(originalImg.getRGB(aCoordXOldPlusOne, aCoordYOldPlusOne));
 
-                // with the location of old point A, we can calculate the other old points
+                // with the location of the original point A, we can calculate the location in the new image
                 // in the new points
-                int aCoordX = aCoordXOld * newWidth / oldWidth;
-                int aCoordY = aCoordYOld * newHeight / oldHeight;
+                int aCoordX = aCoordXOld * newWidth / originalWidth;
+                int aCoordY = aCoordYOld * newHeight / originalHeight;
                 int[] aCoord = {aCoordX, aCoordY};
 
-                int bCoordX = (aCoordXOld + 1) * newWidth / oldWidth;
-                int bCoordY = aCoordYOld * newHeight / oldHeight;
+                int bCoordX = (aCoordXOld + 1) * newWidth / originalWidth;
+                int bCoordY = aCoordYOld * newHeight / originalHeight;
                 int[] bCoord = {bCoordX, bCoordY};
 
-                int cCoordX = aCoordXOld * newWidth / oldWidth;
-                int cCoordY = (aCoordYOld + 1) * newHeight / oldHeight;
+                int cCoordX = aCoordXOld * newWidth / originalWidth;
+                int cCoordY = (aCoordYOld + 1) * newHeight / originalHeight;
                 int[] cCoord = {cCoordX, cCoordY};
 
-                int dCoordX = (aCoordXOld + 1) * newWidth / oldWidth;
-                int dCoordY = (aCoordYOld + 1) * newWidth / oldWidth;
+                int dCoordX = (aCoordXOld + 1) * newWidth / originalWidth;
+                int dCoordY = (aCoordYOld + 1) * newWidth / originalWidth;
                 int[] dCoord = {dCoordX, dCoordY};
 
                 // find Z value through bilinear interpolation
@@ -77,23 +75,22 @@ public class BilinearScale implements ImageScale {
                 int zValueGreen = (int) bilinearInterpolation(aValue.getGreen(), aCoord, bValue.getGreen(), bCoord, cValue.getGreen(), cCoord, dValue.getGreen(), dCoord, zCoord);
                 int zValueBlue = (int) bilinearInterpolation(aValue.getBlue(), aCoord, bValue.getBlue(), bCoord, cValue.getBlue(), cCoord, dValue.getBlue(), dCoord, zCoord);
 
-                if (zValueRed > 255) zValueRed = 255;
-                if (zValueRed < 0) zValueRed = 0;
-                if (zValueGreen > 255) zValueGreen = 255;
-                if (zValueGreen < 0) zValueGreen = 0;
-                if (zValueBlue > 255) zValueBlue = 255;
-                if (zValueBlue < 0) zValueBlue = 0;
+                zValueRed = Math.min(zValueRed, 255);
+                zValueRed = Math.max(zValueRed, 0);
+                zValueGreen = Math.min(zValueGreen, 255);
+                zValueGreen = Math.max(zValueGreen, 0);
+                zValueBlue = Math.min(zValueBlue, 255);
+                zValueBlue = Math.max(zValueBlue, 0);
 
                 try {
                     Color zValue = new Color(zValueRed, zValueGreen, zValueBlue);
-                    newImg.setRGB(x, y, zValue.getRGB());
+                    newImage.setRGB(x, y, zValue.getRGB());
                 } catch (IllegalArgumentException e) {
                     e.getStackTrace();
                 }
-
             }
         }
-        return newImg;
+        return newImage;
     }
 
     /**
