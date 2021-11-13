@@ -18,52 +18,79 @@ public class BilinearScale implements ImageScale {
         // Basically if you want to reduce 600x600 to 30x30,
         // you first reduce to 300x300, then 150x150, then 75x75,
         // then 38x38, and only then use bilinear to reduce to 30x30.
-
-        int newWidth = (int) (originalImg.getWidth() * scaleX);
-        int newHeight = (int) (originalImg.getHeight() * scaleY);
+        int oldWidth = originalImg.getWidth();
+        int newWidth = (int) (oldWidth * scaleX);
+        int oldHeight = originalImg.getHeight();
+        int newHeight = (int) (oldHeight * scaleY);
 
         BufferedImage newImg = new BufferedImage(newWidth, newHeight, originalImg.getType());
 
         for (int x = 0; x < newWidth; x++) {
             for (int y = 0; y < newHeight; y++) {
 
-                Color aValue;
-                int[] aCoord;
-                Color bValue;
-                int[] bCoord;
-                Color cValue;
-                int[] cCoord;
-                Color dValue;
-                int[] dCoord;
-                Color zValue;
                 int[] zCoord = {x, y};
 
-                // get the values of the nearest pixels in the original image
+                // get location of the nearest old pixels
+                int aCoordXOld = (int) ((float) x / newWidth * oldWidth);
+                int aCoordYOld = (int) ((float) y / newHeight * oldHeight);
 
-                int aCoordX = x / newWidth / originalImg.getWidth();
-                int aCoordY = y / newHeight / originalImg.getHeight();
+                // TODO Bug here: is always [0, 0]
+                int aCoordXOldPlusOne;
+                if (aCoordXOld + 1 > oldWidth) {
+                    aCoordXOldPlusOne = aCoordXOld + 1;
+                } else {
+                    aCoordXOldPlusOne = aCoordXOld;
+                }
 
-                aCoord = new int[]{aCoordX, aCoordY};
-                bCoord = new int[]{aCoordX + 1, aCoordY};
-                cCoord = new int[]{aCoordX, aCoordY + 1};
-                dCoord = new int[]{aCoordX + 1, aCoordY + 1};
+                int aCoordYOldPlusOne;
+                if (aCoordYOld + 1 > oldHeight) {
+                    aCoordYOldPlusOne = aCoordYOld + 1;
+                } else {
+                    aCoordYOldPlusOne = aCoordYOld;
+                }
 
-                // find the RGB values on the original image
+                Color aValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOld));
+                Color bValue = new Color(originalImg.getRGB(aCoordXOldPlusOne, aCoordYOld));
+                Color cValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOldPlusOne));
+                Color dValue = new Color(originalImg.getRGB(aCoordXOldPlusOne, aCoordYOldPlusOne));
 
-                aValue = new Color(originalImg.getRGB(aCoord[0], aCoord[1]));
-                bValue = new Color(originalImg.getRGB(bCoord[0], bCoord[1]));
-                cValue = new Color(originalImg.getRGB(cCoord[0], cCoord[1]));
-                dValue = new Color(originalImg.getRGB(dCoord[0], dCoord[1]));
+                // with the location of old point A, we can calculate the other old points
+                // in the new points
+                int aCoordX = aCoordXOld * newWidth / oldWidth;
+                int aCoordY = aCoordYOld * newHeight / oldHeight;
+                int[] aCoord = {aCoordX, aCoordY};
 
-                // bilinear interpolation calling the linear interpolation function
+                int bCoordX = (aCoordXOld + 1) * newWidth / oldWidth;
+                int bCoordY = aCoordYOld * newHeight / oldHeight;
+                int[] bCoord = {bCoordX, bCoordY};
 
-                int zRed = (int) bilinearInterpolation(aValue.getRed(), aCoord, bValue.getRed(), bCoord, cValue.getRed(), cCoord, dValue.getRed(), dCoord, zCoord);
-                int zGreen = (int) bilinearInterpolation(aValue.getGreen(), aCoord, bValue.getGreen(), bCoord, cValue.getGreen(), cCoord, dValue.getGreen(), dCoord, zCoord);
-                int zBlue = (int) bilinearInterpolation(aValue.getBlue(), aCoord, bValue.getBlue(), bCoord, cValue.getBlue(), cCoord, dValue.getBlue(), dCoord, zCoord);
+                int cCoordX = aCoordXOld * newWidth / oldWidth;
+                int cCoordY = (aCoordYOld + 1) * newHeight / oldHeight;
+                int[] cCoord = {cCoordX, cCoordY};
 
-                zValue = new Color(zRed, zGreen, zBlue);
+                int dCoordX = (aCoordXOld + 1) * newWidth / oldWidth;
+                int dCoordY = (aCoordYOld + 1) * newWidth / oldWidth;
+                int[] dCoord = {dCoordX, dCoordY};
 
-                newImg.setRGB(x, y, zValue.getRGB());
+                // find Z value through bilinear interpolation
+                int zValueRed = (int) bilinearInterpolation(aValue.getRed(), aCoord, bValue.getRed(), bCoord, cValue.getRed(), cCoord, dValue.getRed(), dCoord, zCoord);
+                int zValueGreen = (int) bilinearInterpolation(aValue.getGreen(), aCoord, bValue.getGreen(), bCoord, cValue.getGreen(), cCoord, dValue.getGreen(), dCoord, zCoord);
+                int zValueBlue = (int) bilinearInterpolation(aValue.getBlue(), aCoord, bValue.getBlue(), bCoord, cValue.getBlue(), cCoord, dValue.getBlue(), dCoord, zCoord);
+
+                if (zValueRed > 255) zValueRed = 255;
+                if (zValueRed < 0) zValueRed = 0;
+                if (zValueGreen > 255) zValueGreen = 255;
+                if (zValueGreen < 0) zValueGreen = 0;
+                if (zValueBlue > 255) zValueBlue = 255;
+                if (zValueBlue < 0) zValueBlue = 0;
+
+                try {
+                    Color zValue = new Color(zValueRed, zValueGreen, zValueBlue);
+                    newImg.setRGB(x, y, zValue.getRGB());
+                } catch (IllegalArgumentException e) {
+                    e.getStackTrace();
+                }
+
             }
         }
         return newImg;
