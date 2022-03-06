@@ -3,7 +3,7 @@ package image.to.conway.image.scaler;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BilinearScale implements ImageScale {
+public class BilinearScale implements ImageScale{
 
     /**
      * Scale image using bilinear interpolation.
@@ -21,102 +21,92 @@ public class BilinearScale implements ImageScale {
     public BufferedImage scale(BufferedImage originalImg, float ratioX, float ratioY) {
 
         int originalWidth = originalImg.getWidth();
-        int newWidth = (int) (originalWidth * ratioX);
+        int width = (int) ((originalWidth) * ratioX);
         int originalHeight = originalImg.getHeight();
-        int newHeight = (int) (originalHeight * ratioY);
+        int height = (int) ((originalHeight) * ratioY);
 
-        BufferedImage newImage = new BufferedImage(newWidth, newHeight, originalImg.getType());
+        BufferedImage newImage = new BufferedImage(width, height, originalImg.getType());
 
-        for (int x = 0; x < newWidth; x++) {
-            for (int y = 0; y < newHeight; y++) {
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
 
-                int[] zCoord = {x, y};
+                float pY = ((float) (originalHeight - 1) / height) * y;
+                float pX = ((float) (originalWidth - 1) / width) * x;
 
-                // get location of the nearest pixels in the original image
-                // TODO do here the check if out of bound
-                int aCoordXOld = (int) ((float) x / newWidth * (originalWidth - 1));
-                int aCoordYOld = (int) ((float) y / newHeight * (originalHeight - 1));
+                int pY0 = (int) Math.floor(pY);
+                int pY1 = (int) Math.ceil(pY);
+                int pX0 = (int) Math.floor(pX);
+                int pX1 = (int) Math.ceil(pX);
 
-                // TODO when reducing the size... + 1 doesn't work ???
-                Color aValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOld));
-                Color bValue = new Color(originalImg.getRGB(aCoordXOld + 1, aCoordYOld));
-                Color cValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOld + 1));
-                Color dValue = new Color(originalImg.getRGB(aCoordXOld + 1, aCoordYOld + 1));
+                Color a = new Color(originalImg.getRGB(pX0, pY0));
+                Color b = new Color(originalImg.getRGB(pX0, pY1));
+                Color c = new Color(originalImg.getRGB(pX1, pY0));
+                Color d = new Color(originalImg.getRGB(pX1, pY1));
 
-                // with the location of the original point A, we can calculate the location in the new image
-                // in the new points
-                int aCoordX = aCoordXOld * newWidth / (originalWidth - 1);
-                int aCoordY = aCoordYOld * newHeight / (originalHeight - 1);
-                int[] aCoord = {aCoordX, aCoordY};
+                Color z = getColor(a, b, c, d, pX0, pY0, pX1, pY1, pX, pY);
 
-                int bCoordX = (aCoordXOld + 1) * newWidth / (originalWidth - 1);
-                int bCoordY = aCoordYOld * newHeight / (originalHeight - 1);
-                int[] bCoord = {bCoordX, bCoordY};
-
-                int cCoordX = aCoordXOld * newWidth / (originalWidth - 1);
-                int cCoordY = (aCoordYOld + 1) * newHeight / (originalHeight - 1);
-                int[] cCoord = {cCoordX, cCoordY};
-
-                int dCoordX = (aCoordXOld + 1) * newWidth / (originalWidth - 1);
-                int dCoordY = (aCoordYOld + 1) * newWidth / (originalWidth - 1);
-                int[] dCoord = {dCoordX, dCoordY};
-
-                // find Z value through bilinear interpolation
-                int zValueRed = (int) bilinearInterpolation(aValue.getRed(), aCoord, bValue.getRed(), bCoord, cValue.getRed(), cCoord, dValue.getRed(), dCoord, zCoord);
-                int zValueGreen = (int) bilinearInterpolation(aValue.getGreen(), aCoord, bValue.getGreen(), bCoord, cValue.getGreen(), cCoord, dValue.getGreen(), dCoord, zCoord);
-                int zValueBlue = (int) bilinearInterpolation(aValue.getBlue(), aCoord, bValue.getBlue(), bCoord, cValue.getBlue(), cCoord, dValue.getBlue(), dCoord, zCoord);
-
-                try {
-                    Color zValue = new Color(zValueRed, zValueGreen, zValueBlue);
-                    newImage.setRGB(x, y, zValue.getRGB());
-                } catch (IllegalArgumentException e) {
-                    e.getStackTrace();
-                }
+                newImage.setRGB(x, y, z.getRGB());
             }
         }
         return newImage;
     }
 
+    private Color getColor(Color a, Color b, Color c, Color d, int pX0, int pY0, int pX1, int pY1, float x, float y) {
+        int red = (int) bilinearInterpolation(a.getRed(), b.getRed(), c.getRed(), d.getRed(), pX0, pY0, pX1, pY1, x, y);
+        int green = (int) bilinearInterpolation(a.getGreen(), b.getGreen(), c.getGreen(), d.getGreen(), pX0, pY0, pX1, pY1, x, y);
+        int blue = (int) bilinearInterpolation(a.getBlue(), b.getBlue(), c.getBlue(), d.getBlue(), pX0, pY0, pX1, pY1, x, y);
+        return new Color(red, green, blue);
+    }
+
     /**
      * Bilinear interpolation
      * source: https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
-     * <p>
-     * A - - X - - B
+     *
+     * A - - R - - B
      * - - - + - - -
      * - - - Z - - -
      * - - - + - - -
-     * C - - Y - - D
+     * C - - G - - D
      *
-     * @param aValue Value of point A
-     * @param aCoord Coordinates of point A
-     * @param bValue Value of point B
-     * @param bCoord Coordinates of point B
-     * @param cValue Value of point C
-     * @param cCoord Coordinates of point C
-     * @param dValue Value of point D
-     * @param dCoord Coordinates of point D
-     * @param zCoord Coordinates of point Z
-     * @return Value of point Z
+     * @param a color value
+     * @param b color value
+     * @param c color value
+     * @param d color value
+     * @param pX0 starting x
+     * @param pY0 starting y
+     * @param pX1 ending x
+     * @param pY1 ending y
+     * @param x point coordinate
+     * @param y point coordinate
+     * @return z
      */
-    float bilinearInterpolation(int aValue, int[] aCoord, int bValue, int[] bCoord, int cValue, int[] cCoord, int dValue, int[] dCoord, int[] zCoord) {
-        int xValue = Math.round(linearInterpolation(aValue, aCoord[0], bValue, bCoord[0], zCoord[0]));
-        int yValue = Math.round(linearInterpolation(cValue, cCoord[0], dValue, dCoord[0], zCoord[0]));
-        return linearInterpolation(xValue, aCoord[1], yValue, cCoord[1], zCoord[1]);
+    float bilinearInterpolation(int a, int b, int c, int d, int pX0, int pY0, int pX1, int pY1, float x, float y) {
+        int r = Math.round(linearInterpolation(a, pY0, b, pY1, y));
+        int g = Math.round(linearInterpolation(c, pY0, d, pY1, y));
+        return linearInterpolation(r, pX0, g, pX1, x);
     }
 
     /**
      * Linear interpolation.
      * source: https://chao-ji.github.io/jekyll/update/2018/07/19/BilinearResize.html
      *
-     * @param aValue Value of point A
-     * @param aCoord Coordinates of point A
-     * @param bValue Value of point B
-     * @param bCoord Coordinates of point B
-     * @param xCoord Coordinates of intermediate point X
+     * @param a Value of point A
+     * @param aStart Coordinates of point A
+     * @param b Value of point B
+     * @param bEnd Coordinates of point B
+     * @param x Coordinates of intermediate point X
      * @return Value of X
      */
-    float linearInterpolation(int aValue, int aCoord, int bValue, int bCoord, int xCoord) {
-        return (aValue * (((float) bCoord - xCoord) / (bCoord - aCoord)) + bValue * (((float) xCoord - aCoord) / (bCoord - aCoord)));
+    float linearInterpolation(int a, int aStart, int b, int bEnd, float x) {
+        float result;
+        if ((bEnd - aStart) <= 0) {
+            result = a;
+        } else {
+            result = (a * ((bEnd - x) / (bEnd - aStart)) + b * ((x - aStart) / (bEnd - aStart)));
+        }
+        return result;
     }
+
+
 
 }

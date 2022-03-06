@@ -1,13 +1,9 @@
 package image.to.conway;
 
-import image.to.conway.game.Game;
-import image.to.conway.game.Grid;
 import image.to.conway.image.filter.BinaryFilter;
 import image.to.conway.image.filter.ImageFilter;
 import image.to.conway.image.scaler.BilinearScale;
-import image.to.conway.service.GridService;
 import image.to.conway.utils.ImageUtils;
-import image.to.conway.utils.MaskUtils;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,13 +14,9 @@ public class Main {
 
     public static void main(String[] args) {
 
-        //TODO binary filter doesn't work on mona lisa
-        //TODO reduce scale doesn't work
-        //TODO who should save the file?
-
-        String imageName = "021";
+        String imageName = "020";
         String fileType = "jpg";
-        float ration = 0.5f;
+        float ration = 0.3f;
 
         String root = "/Users/ricardomendes/Developer/Projects/";
 
