@@ -1,16 +1,7 @@
 package image.to.conway.game;
 
-import image.to.conway.constant.Constant;
-
-import javax.imageio.ImageIO;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
-
 public class Game {
 
-    //attribute
     private int iterationCount = 0;
     private Grid grid;
 

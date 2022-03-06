@@ -15,15 +15,15 @@ public class BilinearScale implements ImageScale {
      * C - - Y - - D
      *
      * @param originalImg Image
-     * @param scaleX      scale magnitude in the x-axis
-     * @param scaleY      scale magnitude in the y-axis
+     * @param ratioX      scale magnitude in the x-axis
+     * @param ratioY      scale magnitude in the y-axis
      */
-    public BufferedImage scale(BufferedImage originalImg, float scaleX, float scaleY) {
+    public BufferedImage scale(BufferedImage originalImg, float ratioX, float ratioY) {
 
         int originalWidth = originalImg.getWidth();
-        int newWidth = (int) (originalWidth * scaleX);
+        int newWidth = (int) (originalWidth * ratioX);
         int originalHeight = originalImg.getHeight();
-        int newHeight = (int) (originalHeight * scaleY);
+        int newHeight = (int) (originalHeight * ratioY);
 
         BufferedImage newImage = new BufferedImage(newWidth, newHeight, originalImg.getType());
 
@@ -33,54 +33,38 @@ public class BilinearScale implements ImageScale {
                 int[] zCoord = {x, y};
 
                 // get location of the nearest pixels in the original image
-                int aCoordXOld = (int) ((float) x / newWidth * originalWidth);
-                int aCoordYOld = (int) ((float) y / newHeight * originalHeight);
+                // TODO do here the check if out of bound
+                int aCoordXOld = (int) ((float) x / newWidth * (originalWidth - 1));
+                int aCoordYOld = (int) ((float) y / newHeight * (originalHeight - 1));
 
-                // be sure that the index is not out of bound
-                int aCoordXOldPlusOne = aCoordXOld + 1;
-                if (aCoordXOld + 1 <= originalWidth) {
-                    aCoordXOldPlusOne = aCoordXOld;
-                }
-
-                int aCoordYOldPlusOne = aCoordYOld + 1;
-                if (aCoordYOld + 1 <= originalHeight) {
-                    aCoordYOldPlusOne = aCoordYOld;
-                }
-
+                // TODO when reducing the size... + 1 doesn't work ???
                 Color aValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOld));
-                Color bValue = new Color(originalImg.getRGB(aCoordXOldPlusOne, aCoordYOld));
-                Color cValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOldPlusOne));
-                Color dValue = new Color(originalImg.getRGB(aCoordXOldPlusOne, aCoordYOldPlusOne));
+                Color bValue = new Color(originalImg.getRGB(aCoordXOld + 1, aCoordYOld));
+                Color cValue = new Color(originalImg.getRGB(aCoordXOld, aCoordYOld + 1));
+                Color dValue = new Color(originalImg.getRGB(aCoordXOld + 1, aCoordYOld + 1));
 
                 // with the location of the original point A, we can calculate the location in the new image
                 // in the new points
-                int aCoordX = aCoordXOld * newWidth / originalWidth;
-                int aCoordY = aCoordYOld * newHeight / originalHeight;
+                int aCoordX = aCoordXOld * newWidth / (originalWidth - 1);
+                int aCoordY = aCoordYOld * newHeight / (originalHeight - 1);
                 int[] aCoord = {aCoordX, aCoordY};
 
-                int bCoordX = (aCoordXOld + 1) * newWidth / originalWidth;
-                int bCoordY = aCoordYOld * newHeight / originalHeight;
+                int bCoordX = (aCoordXOld + 1) * newWidth / (originalWidth - 1);
+                int bCoordY = aCoordYOld * newHeight / (originalHeight - 1);
                 int[] bCoord = {bCoordX, bCoordY};
 
-                int cCoordX = aCoordXOld * newWidth / originalWidth;
-                int cCoordY = (aCoordYOld + 1) * newHeight / originalHeight;
+                int cCoordX = aCoordXOld * newWidth / (originalWidth - 1);
+                int cCoordY = (aCoordYOld + 1) * newHeight / (originalHeight - 1);
                 int[] cCoord = {cCoordX, cCoordY};
 
-                int dCoordX = (aCoordXOld + 1) * newWidth / originalWidth;
-                int dCoordY = (aCoordYOld + 1) * newWidth / originalWidth;
+                int dCoordX = (aCoordXOld + 1) * newWidth / (originalWidth - 1);
+                int dCoordY = (aCoordYOld + 1) * newWidth / (originalWidth - 1);
                 int[] dCoord = {dCoordX, dCoordY};
 
                 // find Z value through bilinear interpolation
                 int zValueRed = (int) bilinearInterpolation(aValue.getRed(), aCoord, bValue.getRed(), bCoord, cValue.getRed(), cCoord, dValue.getRed(), dCoord, zCoord);
                 int zValueGreen = (int) bilinearInterpolation(aValue.getGreen(), aCoord, bValue.getGreen(), bCoord, cValue.getGreen(), cCoord, dValue.getGreen(), dCoord, zCoord);
                 int zValueBlue = (int) bilinearInterpolation(aValue.getBlue(), aCoord, bValue.getBlue(), bCoord, cValue.getBlue(), cCoord, dValue.getBlue(), dCoord, zCoord);
-
-                zValueRed = Math.min(zValueRed, 255);
-                zValueRed = Math.max(zValueRed, 0);
-                zValueGreen = Math.min(zValueGreen, 255);
-                zValueGreen = Math.max(zValueGreen, 0);
-                zValueBlue = Math.min(zValueBlue, 255);
-                zValueBlue = Math.max(zValueBlue, 0);
 
                 try {
                     Color zValue = new Color(zValueRed, zValueGreen, zValueBlue);

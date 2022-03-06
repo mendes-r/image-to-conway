@@ -33,8 +33,8 @@ public class GridServiceIT {
         // act
         boolean[][] mask = MaskUtils.imageToMask(image);
         Grid grid = new Grid(mask);
-        GridService service = new GridService(grid);
-        service.saveAsImage(saveToURL, fileType);
+        GridService service = new GridService();
+        service.saveAsImage(grid, saveToURL, fileType);
 
         // assert
         File file = new File(saveToURL);

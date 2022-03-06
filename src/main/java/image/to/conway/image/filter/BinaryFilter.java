@@ -1,6 +1,6 @@
 package image.to.conway.image.filter;
 
-import image.to.conway.constant.Constant;
+import image.to.conway.constant.RGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -37,10 +37,10 @@ public class BinaryFilter implements ImageFilter {
                 int blue = (int) (color.getBlue() * 0.114);
                 // define when a pixel is black or white
                 if ((red + green + blue) > this.threshold) {
-                    Color newColor = new Color(Constant.WHITE_RGB, Constant.WHITE_RGB, Constant.WHITE_RGB);
+                    Color newColor = new Color(RGB.WHITE.getCode(), RGB.WHITE.getCode(), RGB.WHITE.getCode());
                     newImage.setRGB(j, i, newColor.getRGB());
                 } else {
-                    Color newColor = new Color(Constant.BLACK_RGB, Constant.BLACK_RGB, Constant.BLACK_RGB);
+                    Color newColor = new Color(RGB.BLACK.getCode(), RGB.BLACK.getCode(), RGB.BLACK.getCode());
                     newImage.setRGB(j, i, newColor.getRGB());
                 }
             }

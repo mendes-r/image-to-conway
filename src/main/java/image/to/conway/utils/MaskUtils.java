@@ -1,6 +1,6 @@
 package image.to.conway.utils;
 
-import image.to.conway.constant.Constant;
+import image.to.conway.constant.RGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -48,7 +48,7 @@ public final class MaskUtils {
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 Color color = new Color(image.getRGB(j, i));
-                mask[i][j] = color.getRed() == Constant.BLACK_RGB;
+                mask[i][j] = color.getRed() == RGB.BLACK.getCode();
             }
         }
         return mask;

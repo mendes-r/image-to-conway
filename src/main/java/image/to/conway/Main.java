@@ -22,14 +22,14 @@ public class Main {
         //TODO reduce scale doesn't work
         //TODO who should save the file?
 
-        String imageName = "001";
+        String imageName = "021";
         String fileType = "jpg";
-        float ration = 2.0f;
+        float ration = 0.5f;
 
         String root = "/Users/ricardomendes/Developer/Projects/";
 
         String url = root + "image-to-conway/img/" + imageName + "." + fileType;
-        String saveToURL = root + "image-to-conway/img/result/result1-" + imageName;
+        String saveToURL = root + "image-to-conway/img/result/result1-" + imageName + "." + fileType;
         short threshold = 100;
 
         BilinearScale scaler = new BilinearScale();
@@ -37,19 +37,25 @@ public class Main {
         BufferedImage image = ImageUtils.url2Image(url);
 
         image = scaler.scale(image, ration, ration);
-        image = filter.filter(image);
+        //image = filter.filter(image);
 
+        try {
+            File output = new File(saveToURL);
+            ImageIO.write(image, fileType, output);
+        } catch (IOException exception) {
+            exception.getStackTrace();
+        }
 
-        boolean[][] mask = MaskUtils.imageToMask(image);
-        MaskUtils.printToCLI(mask);
+        // boolean[][] mask = MaskUtils.imageToMask(image);
+        // MaskUtils.printToCLI(mask);
 
-        Grid grid = new Grid(mask);
+        // Grid grid = new Grid(mask);
 
-        GridService service = new GridService();
+        // GridService service = new GridService();
 
-        Game game = new Game(grid);
-        game.playNextIteration();
-        service.saveAsImage(game.getGrid(), saveToURL, fileType);
+        // Game game = new Game(grid);
+        // game.playNextIteration();
+        // service.saveAsImage(game.getGrid(), saveToURL, fileType);
 
     }
 

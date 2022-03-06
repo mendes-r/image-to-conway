@@ -1,6 +1,6 @@
 package image.to.conway.service;
 
-import image.to.conway.constant.Constant;
+import image.to.conway.constant.RGB;
 import image.to.conway.game.Grid;
 
 import javax.imageio.ImageIO;
@@ -33,10 +33,10 @@ public class GridService {
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
                 if (mask[i][j]) {
-                    Color black = new Color(Constant.BLACK_RGB, Constant.BLACK_RGB, Constant.BLACK_RGB);
+                    Color black = new Color(RGB.BLACK.getCode(), RGB.BLACK.getCode(), RGB.BLACK.getCode());
                     image.setRGB(j, i, black.getRGB());
                 } else {
-                    Color white = new Color(Constant.WHITE_RGB, Constant.WHITE_RGB, Constant.WHITE_RGB);
+                    Color white = new Color(RGB.WHITE.getCode(), RGB.WHITE.getCode(), RGB.WHITE.getCode());
                     image.setRGB(j, i, white.getRGB());
                 }
             }
