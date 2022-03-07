@@ -1,8 +1,8 @@
-package image.to.conway.image.scaler;
+package image.to.conway.image.resizer;
 
 import java.awt.image.BufferedImage;
 
-public interface ImageScale {
+public interface ImageResize {
 
     /**
      * Scale image.

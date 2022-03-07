@@ -1,5 +1,7 @@
 package image.to.conway.game;
 
+import image.to.conway.entities.Grid;
+
 public class Game {
 
     private int iterationCount = 0;

@@ -1,5 +1,6 @@
 package image.to.conway.game;
 
+import image.to.conway.entities.Grid;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;

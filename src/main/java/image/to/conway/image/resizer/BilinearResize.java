@@ -1,9 +1,9 @@
-package image.to.conway.image.scaler;
+package image.to.conway.image.resizer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public class BilinearScale implements ImageScale{
+public class BilinearResize implements ImageResize {
 
     /**
      * Scale image using bilinear interpolation.

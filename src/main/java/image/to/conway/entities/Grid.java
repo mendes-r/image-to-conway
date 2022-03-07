@@ -1,4 +1,4 @@
-package image.to.conway.game;
+package image.to.conway.entities;
 
 public class Grid {
 
