@@ -1,4 +1,4 @@
-package image.to.conway.service;
+package image.to.conway.importer;
 
 import image.to.conway.constant.RGB;
 import image.to.conway.entities.Grid;
@@ -9,14 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-public class GridService {
-
-
-    /**
-     * Sole constructor
-     */
-    public GridService() {
-    }
+public class ImageExporter {
 
     /**
      * Save mask as a binary image.
@@ -24,7 +17,7 @@ public class GridService {
      * @param saveToURL where to save the image
      * @param fileType  file type
      */
-    public void saveAsImage(Grid grid, String saveToURL, String fileType) {
+    public void exportImage(Grid grid, String saveToURL, String fileType) {
         boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
@@ -41,7 +34,10 @@ public class GridService {
                 }
             }
         }
+       exportImage(image, saveToURL, fileType);
+    }
 
+    public void exportImage(BufferedImage image, String saveToURL, String fileType) {
         try {
             File output = new File(saveToURL);
             ImageIO.write(image, fileType, output);
@@ -49,5 +45,4 @@ public class GridService {
             exception.getStackTrace();
         }
     }
-
 }

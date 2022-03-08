@@ -8,9 +8,9 @@ public interface ImageResize {
      * Scale image.
      *
      * @param image  Image
-     * @param scaleX scale magnitude in the x-axis
-     * @param scaleY scale magnitude in the y-axis
+     * @param ratioWidth scale magnitude in the x-axis
+     * @param ratioHeight scale magnitude in the y-axis
      */
-    BufferedImage scale(BufferedImage image, float scaleX, float scaleY);
+    BufferedImage resize(BufferedImage image, float ratioWidth, float ratioHeight);
 
 }

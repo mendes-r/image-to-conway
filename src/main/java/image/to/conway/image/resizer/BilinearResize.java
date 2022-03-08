@@ -15,15 +15,15 @@ public class BilinearResize implements ImageResize {
      * C - - Y - - D
      *
      * @param originalImg Image
-     * @param ratioX      scale magnitude in the x-axis
-     * @param ratioY      scale magnitude in the y-axis
+     * @param ratioWidth  scale magnitude in the x-axis
+     * @param ratioHeight scale magnitude in the y-axis
      */
-    public BufferedImage scale(BufferedImage originalImg, float ratioX, float ratioY) {
+    public BufferedImage resize(BufferedImage originalImg, float ratioWidth, float ratioHeight) {
 
         int originalWidth = originalImg.getWidth();
-        int width = (int) ((originalWidth) * ratioX);
+        int width = (int) ((originalWidth) * ratioWidth);
         int originalHeight = originalImg.getHeight();
-        int height = (int) ((originalHeight) * ratioY);
+        int height = (int) ((originalHeight) * ratioHeight);
 
         BufferedImage newImage = new BufferedImage(width, height, originalImg.getType());
 

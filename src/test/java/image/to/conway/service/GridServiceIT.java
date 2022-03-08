@@ -3,6 +3,7 @@ package image.to.conway.service;
 import image.to.conway.entities.Grid;
 import image.to.conway.image.filter.BinaryFilter;
 import image.to.conway.image.filter.ImageFilter;
+import image.to.conway.importer.ImageExporter;
 import image.to.conway.importer.ImageImporter;
 import image.to.conway.utils.MaskUtils;
 import org.junit.jupiter.api.Test;
@@ -27,14 +28,14 @@ public class GridServiceIT {
 
         short threshold = 100;
         ImageFilter filter = new BinaryFilter(threshold);
-        BufferedImage image = ImageImporter.importImage(url);
+        BufferedImage image = new ImageImporter().importImage(url);
         image = filter.filter(image);
 
         // act
         boolean[][] mask = MaskUtils.imageToMask(image);
         Grid grid = new Grid(mask);
-        GridService service = new GridService();
-        service.saveAsImage(grid, saveToURL, fileType);
+        GameService service = new GameService();
+        new ImageExporter().exportImage(grid, saveToURL, fileType);
 
         // assert
         File file = new File(saveToURL);

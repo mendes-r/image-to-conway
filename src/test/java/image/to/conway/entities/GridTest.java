@@ -1,4 +1,4 @@
-package image.to.conway.game;
+package image.to.conway.entities;
 
 import image.to.conway.entities.Grid;
 import org.junit.jupiter.api.Test;
