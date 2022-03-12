@@ -1,13 +1,17 @@
 package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+@Component
 public class BinaryFilter implements ImageFilter {
 
+    @Value("${bilinear.threshold}")
     private final short threshold;
 
     /**

@@ -19,6 +19,9 @@ dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test:2.6.4'
     testImplementation 'org.junit.jupiter:junit-jupiter-api:5.8.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.8.2'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-api', version: '2.15.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-core', version: '2.15.0'
+    compile group: 'org.apache.logging.log4j', name: 'log4j-slf4j-impl', version: '2.15.0'
 }
 
 tasks.named('test') {

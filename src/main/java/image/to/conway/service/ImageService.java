@@ -6,22 +6,26 @@ import image.to.conway.image.resizer.ImageResize;
 import image.to.conway.importer.ImageExporter;
 import image.to.conway.importer.ImageImporter;
 import image.to.conway.image.filter.ImageFilter;
+import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 
 @Service
+@RequiredArgsConstructor
 public class ImageService {
 
-    // TODO Add to properties
+    @Autowired
+    Logger logger;
+    @Autowired
+    private final ImageFilter filter;
+    @Autowired
+    private final ImageResize resize;
 
-    private static final short THRESHOLD = 100;
-    String root = "/";
-    String saveToURL = root + "image-to-conway/src/main/resources/000.jpg";
+    String saveToURL = "image-to-conway/src/main/resources/000.jpg";
     String fileType = "jpg";
-
-    private final ImageFilter filter = new BinaryFilter(THRESHOLD);
-    private final ImageResize resize = new BilinearResize();
 
     public boolean uploadImage(String url, int width, int height) {
         BufferedImage image = ImageImporter.importImage(url);
@@ -30,6 +34,7 @@ public class ImageService {
         try {
             image = filter.filter(resize.resize(image, ratioWidth, ratioHeight));
         } catch (IllegalArgumentException exception) {
+            logger.info("Invalid image passed as argument.");
             exception.getStackTrace();
         }
         ImageExporter.exportImage(image, saveToURL, fileType);

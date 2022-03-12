@@ -52,10 +52,10 @@ public class Grid {
      */
     private boolean isARectangle(boolean[][] matrix) {
         boolean flag = true;
-        int height = matrix.length;
+        int heigth = matrix.length;
         int firstRowLength = matrix[0].length;
 
-        for (int row = 1; row < height && flag; row++) {
+        for (int row = 1; row < heigth && flag; row++) {
             if (matrix[row].length != firstRowLength) {
                 flag = false;
             }

@@ -1,9 +1,12 @@
 package image.to.conway.image.resizer;
 
+import org.springframework.stereotype.Component;
+
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
+@Component
 public class BilinearResize implements ImageResize {
 
     /**

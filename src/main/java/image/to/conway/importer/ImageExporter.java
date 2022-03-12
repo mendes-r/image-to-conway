@@ -2,6 +2,8 @@ package image.to.conway.importer;
 
 import image.to.conway.constant.RGB;
 import image.to.conway.entities.Grid;
+import lombok.AccessLevel;
+import lombok.NoArgsConstructor;
 
 import javax.imageio.ImageIO;
 import java.awt.*;
@@ -9,6 +11,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
+@NoArgsConstructor(access = AccessLevel.PRIVATE)
 public class ImageExporter {
 
     /**
