@@ -1,6 +1,7 @@
 package image.to.conway.entities;
 
 import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.*;
 
 class CellTest {

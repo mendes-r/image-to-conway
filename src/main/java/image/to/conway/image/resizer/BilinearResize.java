@@ -2,6 +2,7 @@ package image.to.conway.image.resizer;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class BilinearResize implements ImageResize {
 
@@ -14,18 +15,20 @@ public class BilinearResize implements ImageResize {
      * - - - + - - -
      * C - - Y - - D
      *
-     * @param originalImg Image
+     * @param image original image
      * @param ratioWidth  scale magnitude in the x-axis
      * @param ratioHeight scale magnitude in the y-axis
      */
-    public BufferedImage resize(BufferedImage originalImg, double ratioWidth, double ratioHeight) {
-        // TODO not Null
-        int originalWidth = originalImg.getWidth();
+    @Override
+    public BufferedImage resize(BufferedImage image, double ratioWidth, double ratioHeight) throws IllegalArgumentException{
+        if(Objects.isNull(image)) throw new IllegalArgumentException();
+
+        int originalWidth = image.getWidth();
         int width = (int) ((originalWidth) * ratioWidth);
-        int originalHeight = originalImg.getHeight();
+        int originalHeight = image.getHeight();
         int height = (int) ((originalHeight) * ratioHeight);
 
-        BufferedImage newImage = new BufferedImage(width, height, originalImg.getType());
+        BufferedImage newImage = new BufferedImage(width, height, image.getType());
 
         for (int x = 0; x < width; x++) {
             for (int y = 0; y < height; y++) {
@@ -38,10 +41,10 @@ public class BilinearResize implements ImageResize {
                 int pX0 = (int) Math.floor(pX);
                 int pX1 = (int) Math.ceil(pX);
 
-                Color a = new Color(originalImg.getRGB(pX0, pY0));
-                Color b = new Color(originalImg.getRGB(pX0, pY1));
-                Color c = new Color(originalImg.getRGB(pX1, pY0));
-                Color d = new Color(originalImg.getRGB(pX1, pY1));
+                Color a = new Color(image.getRGB(pX0, pY0));
+                Color b = new Color(image.getRGB(pX0, pY1));
+                Color c = new Color(image.getRGB(pX1, pY0));
+                Color d = new Color(image.getRGB(pX1, pY1));
 
                 Color z = getColor(a, b, c, d, pX0, pY0, pX1, pY1, pX, pY);
 
@@ -80,7 +83,7 @@ public class BilinearResize implements ImageResize {
      * @param y point coordinate
      * @return z
      */
-    float bilinearInterpolation(int a, int b, int c, int d, int pX0, int pY0, int pX1, int pY1, float x, float y) {
+    private float bilinearInterpolation(int a, int b, int c, int d, int pX0, int pY0, int pX1, int pY1, float x, float y) {
         int r = Math.round(linearInterpolation(a, pY0, b, pY1, y));
         int g = Math.round(linearInterpolation(c, pY0, d, pY1, y));
         return linearInterpolation(r, pX0, g, pX1, x);
@@ -97,7 +100,7 @@ public class BilinearResize implements ImageResize {
      * @param x Coordinates of intermediate point X
      * @return Value of X
      */
-    float linearInterpolation(int a, int aStart, int b, int bEnd, float x) {
+    private float linearInterpolation(int a, int aStart, int b, int bEnd, float x) {
         float result;
         if ((bEnd - aStart) <= 0) {
             result = a;
@@ -106,7 +109,5 @@ public class BilinearResize implements ImageResize {
         }
         return result;
     }
-
-
 
 }

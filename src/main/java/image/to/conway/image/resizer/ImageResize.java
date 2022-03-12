@@ -11,6 +11,6 @@ public interface ImageResize {
      * @param ratioWidth scale magnitude in the x-axis
      * @param ratioHeight scale magnitude in the y-axis
      */
-    BufferedImage resize(BufferedImage image, double ratioWidth, double ratioHeight);
+    BufferedImage resize(BufferedImage image, double ratioWidth, double ratioHeight) throws IllegalArgumentException;
 
 }

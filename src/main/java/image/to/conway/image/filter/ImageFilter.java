@@ -9,5 +9,5 @@ public interface ImageFilter {
      *
      * @param image BufferedImage instance
      */
-    BufferedImage filter(BufferedImage image);
+    BufferedImage filter(BufferedImage image) throws IllegalArgumentException;
 }

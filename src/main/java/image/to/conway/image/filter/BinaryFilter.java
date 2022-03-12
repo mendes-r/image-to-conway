@@ -4,6 +4,7 @@ import image.to.conway.constant.RGB;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.util.Objects;
 
 public class BinaryFilter implements ImageFilter {
 
@@ -23,8 +24,9 @@ public class BinaryFilter implements ImageFilter {
      * Specific implementation for a binary filter given the ImageFilter template.
      */
     @Override
-    public BufferedImage filter(BufferedImage image) {
-        // TODO not Null
+    public BufferedImage filter(BufferedImage image) throws IllegalArgumentException{
+        if(Objects.isNull(image)) throw new IllegalArgumentException();
+
         BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
         for (int i = 0; i < image.getWidth(); i++) {
