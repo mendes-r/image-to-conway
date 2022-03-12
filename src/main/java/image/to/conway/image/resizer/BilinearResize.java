@@ -18,8 +18,8 @@ public class BilinearResize implements ImageResize {
      * @param ratioWidth  scale magnitude in the x-axis
      * @param ratioHeight scale magnitude in the y-axis
      */
-    public BufferedImage resize(BufferedImage originalImg, float ratioWidth, float ratioHeight) {
-
+    public BufferedImage resize(BufferedImage originalImg, double ratioWidth, double ratioHeight) {
+        // TODO not Null
         int originalWidth = originalImg.getWidth();
         int width = (int) ((originalWidth) * ratioWidth);
         int originalHeight = originalImg.getHeight();

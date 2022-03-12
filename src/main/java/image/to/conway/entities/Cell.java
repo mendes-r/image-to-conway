@@ -1,5 +1,7 @@
 package image.to.conway.entities;
 
+import java.util.Objects;
+
 public class Cell {
 
     private final boolean alive;
@@ -9,7 +11,7 @@ public class Cell {
      *
      * @param alive boolean
      */
-    public Cell(boolean alive) {
+    Cell(boolean alive) {
         this.alive = alive;
     }
 
@@ -18,8 +20,29 @@ public class Cell {
      *
      * @return boolean
      */
-    public boolean isAlive() {
+    boolean isAlive() {
         return this.alive;
     }
 
+    /**
+     * Returns a cell with the opposite value
+     *
+     * @return cell instance
+     */
+    Cell toggle() {
+        return new Cell(!this.alive);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Cell cell = (Cell) o;
+        return alive == cell.alive;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(alive);
+    }
 }

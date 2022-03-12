@@ -24,12 +24,12 @@ public class BinaryFilter implements ImageFilter {
      */
     @Override
     public BufferedImage filter(BufferedImage image) {
+        // TODO not Null
+        BufferedImage newImage = new BufferedImage(image.getWidth(), image.getHeight(), image.getType());
 
-        BufferedImage newImage = new BufferedImage(image.getHeight(), image.getWidth(), image.getType());
-
-        for (int i = 0; i < image.getHeight() -1 ; i++) {
-            for (int j = 0; j < image.getWidth() - 1; j++) {
-                Color color = new Color(image.getRGB(j, i));
+        for (int i = 0; i < image.getWidth(); i++) {
+            for (int j = 0; j < image.getHeight(); j++) {
+                Color color = new Color(image.getRGB(i, j));
                 // first find grayscale equivalent
                 // weighted method, weighs red, green and blue according to their wavelengths
                 int red = (int) (color.getRed() * 0.299);
@@ -38,10 +38,10 @@ public class BinaryFilter implements ImageFilter {
                 // define when a pixel is black or white
                 if ((red + green + blue) > this.threshold) {
                     Color newColor = new Color(RGB.WHITE.getCode(), RGB.WHITE.getCode(), RGB.WHITE.getCode());
-                    newImage.setRGB(j, i, newColor.getRGB());
+                    newImage.setRGB(i, j, newColor.getRGB());
                 } else {
                     Color newColor = new Color(RGB.BLACK.getCode(), RGB.BLACK.getCode(), RGB.BLACK.getCode());
-                    newImage.setRGB(j, i, newColor.getRGB());
+                    newImage.setRGB(i, j, newColor.getRGB());
                 }
             }
         }

@@ -17,7 +17,7 @@ public class ImageExporter {
      * @param saveToURL where to save the image
      * @param fileType  file type
      */
-    public void exportImage(Grid grid, String saveToURL, String fileType) {
+    public static void exportImage(Grid grid, String saveToURL, String fileType) {
         boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
@@ -37,7 +37,7 @@ public class ImageExporter {
        exportImage(image, saveToURL, fileType);
     }
 
-    public void exportImage(BufferedImage image, String saveToURL, String fileType) {
+    public static void exportImage(BufferedImage image, String saveToURL, String fileType) {
         try {
             File output = new File(saveToURL);
             ImageIO.write(image, fileType, output);

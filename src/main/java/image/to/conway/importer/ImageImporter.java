@@ -12,7 +12,7 @@ public class ImageImporter {
      * @param url path to the image
      * @return image
      */
-    public BufferedImage importImage(String url) {
+    public static BufferedImage importImage(String url) {
         try {
             File input = new File(url);
             return ImageIO.read(input);

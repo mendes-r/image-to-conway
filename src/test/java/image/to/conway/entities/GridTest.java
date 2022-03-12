@@ -1,15 +1,14 @@
 package image.to.conway.entities;
 
-import image.to.conway.entities.Grid;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-public class GridTest {
+class GridTest {
 
     @Test()
-    public void isNotRectangle() {
+    void isNotRectangle() {
         // arrange
         boolean[][] mask = {
                 {true, false, false},
@@ -22,7 +21,7 @@ public class GridTest {
     }
 
     @Test()
-    public void isNotRectangleNullInput() {
+    void isNotRectangleNullInput() {
         // arrange
         boolean[][] mask = null;
 
@@ -31,7 +30,7 @@ public class GridTest {
     }
 
     @Test()
-    public void isRectangle() {
+    void isRectangle() {
         // arrange
         boolean[][] mask = {
                 {true, false, false},
