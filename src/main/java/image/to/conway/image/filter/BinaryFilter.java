@@ -1,7 +1,9 @@
 package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
+import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
 
 import java.awt.*;
@@ -9,20 +11,12 @@ import java.awt.image.BufferedImage;
 import java.util.Objects;
 
 @Component
+@NoArgsConstructor
+@PropertySource("classpath:application-dev.properties")
 public class BinaryFilter implements ImageFilter {
 
     @Value("${bilinear.threshold}")
-    private final short threshold;
-
-    /**
-     * Sole constructor.
-     *
-     * @param threshold limit that defines what is black and what is white
-     */
-    public BinaryFilter(short threshold) {
-        if (threshold > 255 || threshold < 0) throw new IllegalArgumentException("Threshold must be between 0 - 255");
-        this.threshold = threshold;
-    }
+    private short threshold;
 
     /**
      * Specific implementation for a binary filter given the ImageFilter template.

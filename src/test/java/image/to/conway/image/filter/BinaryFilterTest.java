@@ -17,7 +17,7 @@ class BinaryFilterTest {
         short threshold = 100;
 
         // act
-        BufferedImage binaryImage = new BinaryFilter(threshold).filter(image);
+        BufferedImage binaryImage = new BinaryFilter().filter(image);
 
         // assert
         assertTrue(isBinary(binaryImage, new IsWhiteOrBlack()));
@@ -30,7 +30,7 @@ class BinaryFilterTest {
         short threshold = (short) RGB.BLACK.getCode();
 
         // act
-        BufferedImage binaryImage = new BinaryFilter(threshold).filter(image);
+        BufferedImage binaryImage = new BinaryFilter().filter(image);
 
         // assert
         assertTrue(isBinary(binaryImage, new IsWhite()));
@@ -43,7 +43,7 @@ class BinaryFilterTest {
         short threshold = (short) RGB.WHITE.getCode();
 
         // act
-        BufferedImage binaryImage = new BinaryFilter(threshold).filter(image);
+        BufferedImage binaryImage = new BinaryFilter().filter(image);
 
         // assert
         assertTrue(isBinary(binaryImage, new IsBlack()));

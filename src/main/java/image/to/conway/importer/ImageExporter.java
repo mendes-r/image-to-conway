@@ -46,6 +46,7 @@ public class ImageExporter {
             ImageIO.write(image, fileType, output);
         } catch (IOException exception) {
             exception.getStackTrace();
+            throw new IllegalArgumentException("Image was not exported / saved.");
         }
     }
 }

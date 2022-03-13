@@ -13,7 +13,7 @@ import java.io.File;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class GridServiceIT {
+class GridServiceIT {
 
     String root = "/Users/ricardomendes/Developer/Projects/";
     String url = root + "image-to-conway/img/001.jpg";
@@ -21,21 +21,20 @@ public class GridServiceIT {
     String fileType = "jpg";
 
     @Test
-    public void saveAnImage() {
+    void saveAnImage() {
         // arrange
         File oldFile = new File(saveToURL);
         if (oldFile.exists()) oldFile.delete();
 
         short threshold = 100;
-        ImageFilter filter = new BinaryFilter(threshold);
-        BufferedImage image = new ImageImporter().importImage(url);
+        ImageFilter filter = new BinaryFilter();
+        BufferedImage image = ImageImporter.importImage(url);
         image = filter.filter(image);
 
         // act
         boolean[][] mask = MaskUtils.imageToMask(image);
         Grid grid = new Grid(mask);
-        GameService service = new GameService();
-        new ImageExporter().exportImage(grid, saveToURL, fileType);
+        ImageExporter.exportImage(grid, saveToURL, fileType);
 
         // assert
         File file = new File(saveToURL);

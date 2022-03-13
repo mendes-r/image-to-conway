@@ -4,13 +4,13 @@ import image.to.conway.service.GameService;
 import image.to.conway.service.ImageService;
 import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.awt.image.BufferedImage;
 
-@Controller
+@RestController
 @AllArgsConstructor
 public class GameController implements IGameController{
 
@@ -19,6 +19,14 @@ public class GameController implements IGameController{
     @Autowired
     private final GameService gameService;
 
+    /**
+     * Uploads image.
+     *
+     * @param url image location
+     * @param width in pixels
+     * @param height in pixels
+     * @return true if upload successful
+     */
     @PostMapping
     @Override
     public boolean uploadImage(String url, int width, int height) {

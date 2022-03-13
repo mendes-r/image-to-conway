@@ -1,6 +1,5 @@
 package image.to.conway.image.resizer;
 
-import image.to.conway.importer.ImageExporter;
 import image.to.conway.importer.ImageImporter;
 import org.junit.jupiter.api.Test;
 
