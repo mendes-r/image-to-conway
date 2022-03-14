@@ -1,22 +1,16 @@
 package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
-import lombok.NoArgsConstructor;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
+import lombok.AllArgsConstructor;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-@Component
-@NoArgsConstructor
-@PropertySource("classpath:application-dev.properties")
-public class BinaryFilter implements ImageFilter {
+@AllArgsConstructor
+final class BinaryFilter implements ImageFilter {
 
-    @Value("${bilinear.threshold}")
-    private short threshold;
+    private int threshold;
 
     /**
      * Specific implementation for a binary filter given the ImageFilter template.

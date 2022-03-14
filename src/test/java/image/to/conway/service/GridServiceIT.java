@@ -27,7 +27,7 @@ class GridServiceIT {
         if (oldFile.exists()) oldFile.delete();
 
         short threshold = 100;
-        ImageFilter filter = new BinaryFilter();
+        ImageFilter filter = new BinaryFilter(threshold);
         BufferedImage image = ImageImporter.importImage(url);
         image = filter.filter(image);
 

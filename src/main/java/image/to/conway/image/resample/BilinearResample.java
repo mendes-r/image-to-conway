@@ -1,13 +1,10 @@
-package image.to.conway.image.resizer;
-
-import org.springframework.stereotype.Component;
+package image.to.conway.image.resample;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.util.Objects;
 
-@Component
-public class BilinearResize implements ImageResize {
+final class BilinearResample implements ImageResample {
 
     /**
      * Scale image using bilinear interpolation.

@@ -1,4 +1,4 @@
-package image.to.conway.image.resizer;
+package image.to.conway.image.resample;
 
 import image.to.conway.importer.ImageImporter;
 import org.junit.jupiter.api.Test;
@@ -17,7 +17,7 @@ class BilinearResizeTest {
         int ratio = 2;
 
         // act
-        BufferedImage result = new BilinearResize().resize(image, ratio, ratio);
+        BufferedImage result = new BilinearResample().resize(image, ratio, ratio);
         int newWidth = result.getWidth();
         int newHeight = result.getHeight();
 
@@ -35,7 +35,7 @@ class BilinearResizeTest {
         double ratio = 0.5;
 
         // act
-        BufferedImage result = new BilinearResize().resize(image, ratio, ratio);
+        BufferedImage result = new BilinearResample().resize(image, ratio, ratio);
         int newWidth = result.getWidth();
         int newHeight = result.getHeight();
 

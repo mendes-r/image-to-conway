@@ -1,9 +1,9 @@
 package image.to.conway.service;
 
-import image.to.conway.image.resizer.ImageResize;
+import image.to.conway.image.filter.FilterFactory;
+import image.to.conway.image.resample.ResampleFactory;
 import image.to.conway.importer.ImageExporter;
 import image.to.conway.importer.ImageImporter;
-import image.to.conway.image.filter.ImageFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,9 +15,9 @@ import java.awt.image.BufferedImage;
 public class ImageService {
 
     @Autowired
-    private final ImageFilter filter;
+    private final FilterFactory filterFactory;
     @Autowired
-    private final ImageResize resize;
+    private final ResampleFactory resizeFactory;
 
     String saveToURL = "image-to-conway/src/main/resources/000.jpg";
     String fileType = "jpg";
@@ -27,7 +27,8 @@ public class ImageService {
             BufferedImage image = ImageImporter.importImage(url);
             float ratioWidth = (float) width / image.getWidth();
             float ratioHeight = (float) height / image.getHeight();
-            image = filter.filter(resize.resize(image, ratioWidth, ratioHeight));
+            image = resizeFactory.getBilinearResize().resize(image, ratioWidth, ratioHeight);
+            image = filterFactory.getBinaryFilter().filter(image);
             ImageExporter.exportImage(image, saveToURL, fileType);
             return true;
         } catch (IllegalArgumentException exception) {

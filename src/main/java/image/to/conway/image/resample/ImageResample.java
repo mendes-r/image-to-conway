@@ -1,8 +1,8 @@
-package image.to.conway.image.resizer;
+package image.to.conway.image.resample;
 
 import java.awt.image.BufferedImage;
 
-public interface ImageResize {
+public interface ImageResample {
 
     /**
      * Resize image.
