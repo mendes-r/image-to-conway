@@ -1,8 +1,10 @@
 package image.to.conway.api;
 
+import javax.ws.rs.core.Response;
+
 public interface IGameController {
 
-    boolean uploadImage(String url, int width, int height);
-    String iterate();
+    Response uploadImage(String url, int width, int height);
+    Response iterate();
 
 }

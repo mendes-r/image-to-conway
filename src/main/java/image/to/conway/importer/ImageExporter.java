@@ -1,5 +1,6 @@
 package image.to.conway.importer;
 
+import image.to.conway.constant.FileType;
 import image.to.conway.constant.RGB;
 import image.to.conway.entities.Grid;
 import lombok.AccessLevel;
@@ -20,11 +21,11 @@ public class ImageExporter {
      * @param saveToURL where to save the image
      * @param fileType  file type
      */
-    public static void exportImage(Grid grid, String saveToURL, String fileType) {
+    public static void exportImage(Grid grid, String saveToURL, FileType fileType) {
         boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
-        BufferedImage image = new BufferedImage(height, width, BufferedImage.TYPE_BYTE_BINARY);
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_BYTE_BINARY);
 
         for (int i = 0; i < image.getHeight(); i++) {
             for (int j = 0; j < image.getWidth(); j++) {
@@ -40,10 +41,10 @@ public class ImageExporter {
        exportImage(image, saveToURL, fileType);
     }
 
-    public static void exportImage(BufferedImage image, String saveToURL, String fileType) {
+    public static void exportImage(BufferedImage image, String saveToURL, FileType fileType) {
         try {
             File output = new File(saveToURL);
-            ImageIO.write(image, fileType, output);
+            ImageIO.write(image, fileType.getType(), output);
         } catch (IOException exception) {
             exception.getStackTrace();
             throw new IllegalArgumentException("Image was not exported / saved.");

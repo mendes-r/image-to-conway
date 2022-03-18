@@ -5,7 +5,7 @@ public enum RGB {
     BLACK(0),
     WHITE(255);
 
-    int rgb;
+    private int rgb;
 
     RGB(int rgb) {
         this.rgb = rgb;
