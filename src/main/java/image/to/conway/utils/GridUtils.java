@@ -1,16 +1,17 @@
 package image.to.conway.utils;
 
 import image.to.conway.constant.RGB;
+import image.to.conway.entities.Grid;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 
-public final class MaskUtils {
+public final class GridUtils {
 
     /**
      * Sole constructor.
      */
-    private MaskUtils() {
+    private GridUtils() {
     }
 
     /**
@@ -18,6 +19,7 @@ public final class MaskUtils {
      *
      * @param mask binary grid
      */
+    @Deprecated
     public static void printToCLI(boolean[][] mask) {
         int height = mask.length;
         int width = mask[0].length;
@@ -39,9 +41,9 @@ public final class MaskUtils {
      * Each Cell has an instance variable that tells if the corresponding image pixel is black or white.
      *
      * @param image BufferedImage
-     * @return a binary grid
+     * @return an instance of grid
      */
-    public static boolean[][] imageToMask(BufferedImage image) {
+    public static Grid imageToGrid(BufferedImage image) {
         int height = image.getHeight();
         int width = image.getWidth();
         boolean[][] mask = new boolean[height][width];
@@ -51,7 +53,12 @@ public final class MaskUtils {
                 mask[i][j] = color.getRed() == RGB.BLACK.getCode();
             }
         }
-        return mask;
+        return new Grid(mask);
+    }
+
+    public static BufferedImage gridToImage(Grid grid) {
+        // TODO
+        return null;
     }
 
 }

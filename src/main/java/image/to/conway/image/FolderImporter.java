@@ -1,22 +1,25 @@
-package image.to.conway.importer;
+package image.to.conway.image;
 
 import lombok.AccessLevel;
 import lombok.NoArgsConstructor;
+import org.springframework.stereotype.Component;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-@NoArgsConstructor(access = AccessLevel.PRIVATE)
-public class ImageImporter {
+@Component
+@NoArgsConstructor
+public class FolderImporter implements Importer{
 
     /**
      * Deals with the url 2 BufferedImage logic
      * @param url path to the image
      * @return image
      */
-    public static BufferedImage importImage(String url) {
+    @Override
+    public BufferedImage importImage(String url) {
         try {
             File input = new File(url);
             return ImageIO.read(input);

@@ -1,30 +1,10 @@
 package image.to.conway.game;
 
 import image.to.conway.entities.Grid;
+import org.springframework.stereotype.Component;
 
+@Component
 public class Game {
-
-    private int iterationCount = 0;
-    private Grid grid;
-
-    /**
-     * Sole constructor.
-     *
-     * @param grid - binary grid
-     */
-    public Game(Grid grid) {
-        if (grid == null) throw new NullPointerException();
-        this.grid = grid;
-    }
-
-    /**
-     * Get the number of iterations that already happened.
-     *
-     * @return integer
-     */
-    public int getIterationCount() {
-        return this.iterationCount;
-    }
 
     /**
      * Play next iteration.
@@ -34,8 +14,8 @@ public class Game {
      * 3. All other living cells die in the next generation. Similarly, all other dead cells stay dead.
      * source "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules"
      */
-    public void playNextIteration() {
-        boolean[][] mask = this.grid.getMask();
+    public Grid iterate(Grid grid) {
+        boolean[][] mask = grid.getMask();
         int height = mask.length;
         int width = mask[0].length;
         boolean[][] newMask = new boolean[height][width];
@@ -47,17 +27,7 @@ public class Game {
                 }
             }
         }
-        this.grid = new Grid(newMask);
-        this.iterationCount ++;
-    }
-
-    /**
-     * Returns a copy of the grid.
-     *
-     * @return Grid instance
-     */
-    public Grid getGrid() {
-        return new Grid(this.grid.getMask());
+        return new Grid(newMask);
     }
 
     /**

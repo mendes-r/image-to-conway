@@ -1,12 +1,11 @@
 package image.to.conway.service;
 
-import image.to.conway.constant.FileType;
 import image.to.conway.entities.Grid;
+import image.to.conway.image.Exporter;
+import image.to.conway.image.Importer;
 import image.to.conway.image.filter.FilterFactory;
 import image.to.conway.image.filter.ImageFilter;
-import image.to.conway.importer.ImageExporter;
-import image.to.conway.importer.ImageImporter;
-import image.to.conway.utils.MaskUtils;
+import image.to.conway.utils.GridUtils;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -23,6 +22,10 @@ class GridServiceIT {
 
     @Autowired
     FilterFactory filterFactory;
+    @Autowired
+    Exporter imageExporter;
+    @Autowired
+    Importer imageImporter;
 
     @Test
     void saveAnImage() {
@@ -31,13 +34,13 @@ class GridServiceIT {
         if (oldFile.exists()) oldFile.delete();
 
         ImageFilter filter = filterFactory.getBinaryFilter();
-        BufferedImage image = ImageImporter.importImage(url);
+        BufferedImage image = imageImporter.importImage(url);
         image = filter.filter(image);
 
         // act
-        boolean[][] mask = MaskUtils.imageToMask(image);
-        Grid grid = new Grid(mask);
-        ImageExporter.exportImage(grid, saveToURL, FileType.JPG);
+        Grid grid = GridUtils.imageToGrid(image);
+        //TODO
+//        imageExporter.exportImage(grid);
 
         // assert
         File file = new File(saveToURL);

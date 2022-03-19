@@ -1,19 +1,25 @@
 package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
-import image.to.conway.importer.ImageImporter;
+import image.to.conway.image.Importer;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import static org.junit.jupiter.api.Assertions.*;
 
+@SpringBootTest
 class BinaryFilterTest {
+
+    @Autowired
+    Importer imageImporter;
 
     @Test
     void blackAndWhiteImage() {
         // arrange
-        BufferedImage image = ImageImporter.importImage("src/test/resources/imagetests/01.jpg");
+        BufferedImage image = imageImporter.importImage("src/test/resources/imagetests/01.jpg");
         short threshold = 100;
 
         // act
@@ -26,7 +32,7 @@ class BinaryFilterTest {
     @Test
     void whiteImage() {
         // arrange
-        BufferedImage image = ImageImporter.importImage("src/test/resources/imagetests/01.jpg");
+        BufferedImage image = imageImporter.importImage("src/test/resources/imagetests/01.jpg");
         short threshold = (short) RGB.BLACK.getCode();
 
         // act
@@ -39,7 +45,7 @@ class BinaryFilterTest {
     @Test
     void blackImage() {
         // arrange
-        BufferedImage image = ImageImporter.importImage("src/test/resources/imagetests/01.jpg");
+        BufferedImage image = imageImporter.importImage("src/test/resources/imagetests/01.jpg");
         short threshold = (short) RGB.WHITE.getCode();
 
         // act
