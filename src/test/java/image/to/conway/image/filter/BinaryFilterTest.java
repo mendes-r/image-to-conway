@@ -2,6 +2,7 @@ package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
 import image.to.conway.image.Importer;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
+@Tag("UnitTests")
 class BinaryFilterTest {
 
     @Autowired
