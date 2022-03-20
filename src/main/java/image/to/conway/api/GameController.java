@@ -28,14 +28,14 @@ public class GameController implements IGameController {
      * Uploads image.
      *
      * @param url    image location
-     * @param width  in pixels
-     * @param height in pixels
+     * @param widthRatio  ratio
+     * @param heightRatio ratio
      */
     @POST
     @Path("/upload")
     @Override
-    public Response uploadImage(String url, int width, int height) {
-        return imageService.uploadImage(url, width, height).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
+    public Response uploadImage(String url, int widthRatio, int heightRatio) {
+        return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
     }
 
     @GET

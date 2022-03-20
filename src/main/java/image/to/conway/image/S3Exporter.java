@@ -7,9 +7,8 @@ import java.awt.image.BufferedImage;
 
 @Component("s3-exporter")
 @NoArgsConstructor
-public class S3Exporter implements Exporter {
+public class S3Exporter {
 
-    @Override
     public String exportImage(BufferedImage image) {
         // TODO
         return null;

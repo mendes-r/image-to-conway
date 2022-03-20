@@ -4,16 +4,15 @@ import image.to.conway.image.Exporter;
 import image.to.conway.image.Importer;
 import image.to.conway.image.filter.FilterFactory;
 import image.to.conway.image.resample.ResampleFactory;
-import lombok.RequiredArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 @Service
-@RequiredArgsConstructor
+@AllArgsConstructor
 public class ImageService {
 
     @Autowired
@@ -21,17 +20,14 @@ public class ImageService {
     @Autowired
     private final ResampleFactory resizeFactory;
     @Autowired
-    @Qualifier("${app.exporter}")
     private final Exporter imageExporter;
     @Autowired
     private final Importer imageImporter;
 
-    public Optional<String> uploadImage(String url, int width, int height) {
+    public Optional<String> uploadImage(String url, int widthRatio, int heightRatio) {
         try {
             BufferedImage image = imageImporter.importImage(url);
-            float ratioWidth = (float) width / image.getWidth();
-            float ratioHeight = (float) height / image.getHeight();
-            image = resizeFactory.getBilinearResize().resize(image, ratioWidth, ratioHeight);
+            image = resizeFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
             image = filterFactory.getBinaryFilter().filter(image);
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);

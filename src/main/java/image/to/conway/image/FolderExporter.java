@@ -21,7 +21,7 @@ public class FolderExporter implements Exporter {
 
     @Override
     public String exportImage(BufferedImage image) {
-        String url = saveToURL + Instant.now().getEpochSecond();
+        String url = saveToURL + Instant.now().getEpochSecond() + "." + fileType;
         try {
             File output = new File(url);
             ImageIO.write(image, fileType, output);

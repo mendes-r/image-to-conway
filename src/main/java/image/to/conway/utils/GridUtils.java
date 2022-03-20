@@ -57,8 +57,20 @@ public final class GridUtils {
     }
 
     public static BufferedImage gridToImage(Grid grid) {
-        // TODO
-        return null;
+        int width = grid.getWidth();
+        int height = grid.getHeight();
+        BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
+        // create image iterator with bufferedImage (encapsulate)
+        for (int i = 0; i < height; i++) {
+            for (int j = 0; j < width; j++) {
+                if (grid.cellValue(i, j)) {
+                    image.setRGB(i, j, RGB.BLACK.getCode());
+                } else {
+                    image.setRGB(i, j, RGB.WHITE.getCode());
+                }
+            }
+        }
+        return image;
     }
 
 }

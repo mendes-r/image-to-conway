@@ -13,11 +13,12 @@ class BilinearResizeTest {
 
     @Autowired
     Importer imageImporter;
+    String firstUrl = "src/test/resources/imagetests/01.jpg";
 
     @Test
     void resizeImageDouble() {
         // arrange
-        BufferedImage image = imageImporter.importImage("src/test/resources/imagetests/01.jpg");
+        BufferedImage image = imageImporter.importImage(firstUrl);
         int width = image.getWidth();
         int height = image.getHeight();
         int ratio = 2;
@@ -35,7 +36,7 @@ class BilinearResizeTest {
     @Test
     void resizeImageHalf() {
         // arrange
-        BufferedImage image = imageImporter.importImage("src/test/resources/imagetests/01.jpg");
+        BufferedImage image = imageImporter.importImage(firstUrl);
         int width = image.getWidth();
         int height = image.getHeight();
         double ratio = 0.5;

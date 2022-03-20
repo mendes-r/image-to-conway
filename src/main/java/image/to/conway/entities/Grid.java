@@ -1,9 +1,13 @@
 package image.to.conway.entities;
 
+import lombok.Getter;
+
 public class Grid {
 
     private final Cell[][] cells;
+    @Getter
     private final int height;
+    @Getter
     private final int width;
 
     /**
@@ -31,6 +35,7 @@ public class Grid {
      *
      * @return a grid of booleans, aka a mask
      */
+    @Deprecated
     public boolean[][] getMask() {
         boolean[][] mask = new boolean[this.height][this.width];
         for (int i = 0; i < this.height; i++) {
@@ -41,6 +46,10 @@ public class Grid {
             }
         }
         return mask;
+    }
+
+    public boolean cellValue(int i, int j) {
+        return this.cells[i][j].isAlive();
     }
 
     /**
@@ -60,7 +69,6 @@ public class Grid {
                 flag = false;
             }
         }
-
         return flag;
     }
 

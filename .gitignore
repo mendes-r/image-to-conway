@@ -144,3 +144,5 @@ gradle-app.setting
 # Extra
 img
 bin
+**/results/*.jpg
+**/results/*.png
