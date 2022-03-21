@@ -5,23 +5,26 @@ import image.to.conway.game.Game;
 import image.to.conway.image.Exporter;
 import image.to.conway.image.Importer;
 import image.to.conway.utils.GridUtils;
-import lombok.AllArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
 
 @Service
-@AllArgsConstructor
 public class GameService {
 
-    @Autowired
     private final Game game;
-    @Autowired
     private final Importer imageImporter;
-    @Autowired
     private final Exporter imageExporter;
+
+    @Autowired
+    public GameService(Game game, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+        this.game = game;
+        this.imageImporter = imageImporter;
+        this.imageExporter = imageExporter;
+    }
 
     /**
      * Iterates one level the game.
