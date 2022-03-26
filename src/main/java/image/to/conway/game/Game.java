@@ -33,7 +33,6 @@ public class Game {
         int width = grid.getWidth();
         boolean[][] mask = grid.getMask();
         boolean[][] newMask = new boolean[height][width];
-        // TODO iterator and trying to abdicate the mask
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (isAliveAndHasTwoOrThreeNeighbors(mask, i, j) || isDeadButHasThreeNeighbors(mask, i, j)) {

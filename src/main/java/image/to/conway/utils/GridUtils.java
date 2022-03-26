@@ -63,7 +63,6 @@ public final class GridUtils {
         // create image iterator with bufferedImage (encapsulate)
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
-                // TODO grid was constructed with width and height in different order
                 if (grid.cellValue(i, j)) {
                     image.setRGB(i, j, getValue(RGB.WHITE));
                 } else {

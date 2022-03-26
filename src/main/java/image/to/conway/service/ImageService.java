@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class ImageService {
@@ -18,13 +19,15 @@ public class ImageService {
     private final ResampleFactory resampleFactory;
     private final Exporter imageExporter;
     private final Importer imageImporter;
+    private final Logger logger;
 
     @Autowired
-    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter, Logger logger) {
         this.filterFactory = filterFactory;
         this.resampleFactory = resampleFactory;
         this.imageImporter = imageImporter;
         this.imageExporter = imageExporter;
+        this.logger = logger;
     }
 
     public Optional<String> uploadImage(String url, int widthRatio, int heightRatio) {
@@ -35,7 +38,7 @@ public class ImageService {
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);
         } catch (IllegalArgumentException exception) {
-            exception.getStackTrace();
+            logger.warning("Illegal argument " + exception.getMessage());
             return Optional.empty();
         }
     }

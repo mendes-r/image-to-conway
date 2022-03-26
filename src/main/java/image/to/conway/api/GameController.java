@@ -12,6 +12,7 @@ import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.core.Response;
+import java.util.logging.Logger;
 
 @RestController
 @Path("/game")
@@ -22,6 +23,8 @@ public class GameController implements IGameController {
     private final ImageService imageService;
     @Autowired
     private final GameService gameService;
+    @Autowired
+    private final Logger logger;
 
 
     /**
@@ -36,6 +39,7 @@ public class GameController implements IGameController {
     @Path("/upload")
     @Override
     public Response uploadImage(String url, int widthRatio, int heightRatio) {
+        logger.info("Image upload from " + url);
         return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
     }
 
@@ -48,6 +52,7 @@ public class GameController implements IGameController {
     @GET
     @Override
     public Response iterate(@PathParam("url") String url, @PathParam("iterations") int iterations) {
+        logger.info("Start iteration " + iterations + " number of times, beginning with image " + url);
         return gameService.iterate(url, iterations).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
     }
 }

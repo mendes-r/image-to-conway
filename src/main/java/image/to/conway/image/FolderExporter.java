@@ -34,7 +34,7 @@ public class FolderExporter implements Exporter {
             return url;
         } catch (IOException exception) {
             exception.getStackTrace();
-            throw new IllegalArgumentException("Image was not exported / saved.");
+            throw new IllegalArgumentException("Image was not exported/saved.");
         }
     }
 }
