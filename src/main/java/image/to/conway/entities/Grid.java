@@ -21,9 +21,9 @@ public class Grid {
         this.width = mask[0].length;
         Cell[][] tempCells = new Cell[height][width];
 
-        for (int row = 0; row < this.height; row++) {
-            for (int col = 0; col < this.width; col++) {
-                tempCells[row][col] = new Cell(mask[row][col]);
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                tempCells[j][i] = new Cell(mask[j][i]);
             }
         }
 
@@ -38,10 +38,10 @@ public class Grid {
     @Deprecated
     public boolean[][] getMask() {
         boolean[][] mask = new boolean[this.height][this.width];
-        for (int i = 0; i < this.height; i++) {
-            for (int j = 0; j < this.width; j++) {
-                if (this.cells[i][j].isAlive()) {
-                    mask[i][j] = true;
+        for (int i = 0; i < this.width; i++) {
+            for (int j = 0; j < this.height; j++) {
+                if (this.cells[j][i].isAlive()) {
+                    mask[j][i] = true;
                 }
             }
         }
@@ -49,7 +49,7 @@ public class Grid {
     }
 
     public boolean cellValue(int i, int j) {
-        return this.cells[i][j].isAlive();
+        return this.cells[j][i].isAlive();
     }
 
     /**
@@ -61,10 +61,10 @@ public class Grid {
      */
     private boolean isARectangle(boolean[][] matrix) {
         boolean flag = true;
-        int heigth = matrix.length;
+        int height = matrix.length;
         int firstRowLength = matrix[0].length;
 
-        for (int row = 1; row < heigth && flag; row++) {
+        for (int row = 1; row < height && flag; row++) {
             if (matrix[row].length != firstRowLength) {
                 flag = false;
             }

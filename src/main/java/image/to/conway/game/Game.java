@@ -3,8 +3,22 @@ package image.to.conway.game;
 import image.to.conway.entities.Grid;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class Game {
+
+    public List<Grid> start(Grid grid, int iterations) {
+        List<Grid> list = new ArrayList<>();
+        Grid temp = grid;
+        for (int i = 0; i < iterations; i++) {
+            Grid result = iterate(temp);
+            temp = result;
+            list.add(result);
+        }
+        return list;
+    }
 
     /**
      * Play next iteration.
@@ -14,12 +28,12 @@ public class Game {
      * 3. All other living cells die in the next generation. Similarly, all other dead cells stay dead.
      * source "https://en.wikipedia.org/wiki/Conway%27s_Game_of_Life#Rules"
      */
-    public Grid iterate(Grid grid) {
+    private Grid iterate(Grid grid) {
+        int height = grid.getHeight();
+        int width = grid.getWidth();
         boolean[][] mask = grid.getMask();
-        int height = mask.length;
-        int width = mask[0].length;
         boolean[][] newMask = new boolean[height][width];
-
+        // TODO iterator and trying to abdicate the mask
         for (int i = 0; i < height; i++) {
             for (int j = 0; j < width; j++) {
                 if (isAliveAndHasTwoOrThreeNeighbors(mask, i, j) || isDeadButHasThreeNeighbors(mask, i, j)) {

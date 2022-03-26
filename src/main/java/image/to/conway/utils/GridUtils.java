@@ -47,10 +47,10 @@ public final class GridUtils {
         int height = image.getHeight();
         int width = image.getWidth();
         boolean[][] mask = new boolean[height][width];
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                Color color = new Color(image.getRGB(j, i));
-                mask[i][j] = color.getRed() == RGB.BLACK.getCode();
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                Color color = new Color(image.getRGB(i, j));
+                mask[j][i] = color.getRed() == RGB.BLACK.getCode();
             }
         }
         return new Grid(mask);
@@ -61,16 +61,21 @@ public final class GridUtils {
         int height = grid.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         // create image iterator with bufferedImage (encapsulate)
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
+        for (int i = 0; i < width; i++) {
+            for (int j = 0; j < height; j++) {
+                // TODO grid was constructed with width and height in different order
                 if (grid.cellValue(i, j)) {
-                    image.setRGB(i, j, RGB.BLACK.getCode());
+                    image.setRGB(i, j, getValue(RGB.WHITE));
                 } else {
-                    image.setRGB(i, j, RGB.WHITE.getCode());
+                    image.setRGB(i, j, getValue(RGB.BLACK));
                 }
             }
         }
         return image;
+    }
+
+    static int getValue(RGB rgb) {
+        return new Color(rgb.getCode(), rgb.getCode(), rgb.getCode()).getRGB();
     }
 
 }

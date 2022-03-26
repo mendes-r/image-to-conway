@@ -22,7 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 class ImageServiceIT {
 
     @Autowired
-    ImageService imageService;
+    ImageService service;
     String firstUrl = "src/test/resources/imagetests/02.jpg";
 
     @Test
@@ -37,7 +37,7 @@ class ImageServiceIT {
         int originalHeight = originalImage.getHeight();
 
         // act
-        Optional<String> optional = imageService.uploadImage(firstUrl, widthRatio, heightRatio);
+        Optional<String> optional = service.uploadImage(firstUrl, widthRatio, heightRatio);
 
         // assert
         assertTrue(optional.isPresent());

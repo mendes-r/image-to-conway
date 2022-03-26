@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class GameService {
@@ -31,11 +33,16 @@ public class GameService {
      *
      * @return url with the location of the new image
      */
-    public Optional<String> iterate(String url) {
+    public Optional<List<String>> iterate(String url, int iterations) {
         // TODO How to validate that the url is form a binary image with the right dimension?
         BufferedImage image = imageImporter.importImage(url);
-        Grid resultGrid = this.game.iterate(GridUtils.imageToGrid(image));
-        BufferedImage resultImage = GridUtils.gridToImage(resultGrid);
-        return Optional.ofNullable(imageExporter.exportImage(resultImage));
+        List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
+        List<String> urls = exportGrids(result);
+        return Optional.ofNullable(urls);
+    }
+
+    private List<String> exportGrids(List<Grid> grids) {
+        List<String> urls = grids.stream().map(GridUtils::gridToImage).map(imageExporter::exportImage).collect(Collectors.toList());
+        return urls;
     }
 }

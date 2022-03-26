@@ -21,9 +21,15 @@ public class FolderExporter implements Exporter {
 
     @Override
     public String exportImage(BufferedImage image) {
-        String url = saveToURL + Instant.now().getEpochSecond() + "." + fileType;
+        int count = 0;
+        File output;
+        String url;
         try {
-            File output = new File(url);
+            do {
+                url = saveToURL + Instant.now().getEpochSecond() + "-" + count + "." + fileType;
+                output = new File(url);
+                count++;
+            } while (output.exists());
             ImageIO.write(image, fileType, output);
             return url;
         } catch (IOException exception) {

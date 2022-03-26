@@ -31,6 +31,13 @@ tasks.named('test') {
     useJUnitPlatform()
 }
 
+clean.doFirst {
+    delete fileTree('src/test/resources/results/') {
+        include '**/*.jpg'
+        include '**/*.png'
+    }
+}
+
 task integrationTests(type: Test) {
     useJUnitPlatform() {
         includeTags("IntegrationTests")

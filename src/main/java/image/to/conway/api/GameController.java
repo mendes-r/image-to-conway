@@ -30,6 +30,7 @@ public class GameController implements IGameController {
      * @param url    image location
      * @param widthRatio  ratio
      * @param heightRatio ratio
+     *@return Http response with uploaded image
      */
     @POST
     @Path("/upload")
@@ -38,9 +39,15 @@ public class GameController implements IGameController {
         return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
     }
 
+    /**
+     *
+     * @param url image location
+     * @param iterations number of iterations
+     * @return Http response with the images of the iterations
+     */
     @GET
     @Override
-    public Response iterate(@PathParam("url") String url) {
-        return gameService.iterate(url).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
+    public Response iterate(@PathParam("url") String url, @PathParam("iterations") int iterations) {
+        return gameService.iterate(url, iterations).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
     }
 }
