@@ -146,3 +146,4 @@ img
 bin
 **/results/*.jpg
 **/results/*.png
+**/.localstack
