@@ -1,5 +1,6 @@
 package image.to.conway.image;
 
+import image.to.conway.utils.NameGenerator;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -21,15 +22,9 @@ public class FolderExporter implements Exporter {
 
     @Override
     public String exportImage(BufferedImage image) {
-        int count = 0;
-        File output;
-        String url;
+        String url = saveToURL + NameGenerator.getAFileName(fileType);
+        File output = new File(url);
         try {
-            do {
-                url = saveToURL + Instant.now().getEpochSecond() + "-" + count + "." + fileType;
-                output = new File(url);
-                count++;
-            } while (output.exists());
             ImageIO.write(image, fileType, output);
             return url;
         } catch (IOException exception) {

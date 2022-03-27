@@ -1,13 +1,20 @@
 package image.to.conway.image;
 
 import com.amazonaws.services.s3.AmazonS3;
-import com.amazonaws.services.s3.model.PutObjectResult;
+import com.amazonaws.services.s3.model.ObjectMetadata;
+import image.to.conway.utils.NameGenerator;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.logging.Logger;
 
 @Component("s3-exporter")
 @NoArgsConstructor
@@ -15,25 +22,42 @@ public class S3Exporter implements Exporter {
 
     @Autowired
     AmazonS3 s3;
+    @Autowired
+    Logger logger;
     @Value("${aws.bucket.name}")
     private String bucketName;
+    @Value("${app.file.type}")
+    private String fileType;
 
     @Override
     public String exportImage(BufferedImage image) {
+
         if (!s3.doesBucketExistV2(bucketName)) {
             s3.createBucket(bucketName);
         }
 
-        // TODO need to transform image to url and then remove the url after uploaded to the bucket
-        String key = "";
-        String content = "";
+        try {
+            String key = NameGenerator.getAFileName(fileType);
+            save(image, key);
+            return s3.getUrl(bucketName, key).getPath();
+        } catch (IOException exception) {
+            logger.warning("Image was not uploaded to bucket: " + exception.getMessage());
+            throw new IllegalArgumentException("Image was not exported/saved.");
+        }
 
-        s3.putObject(
-                bucketName,
-                key,
-                content
-        );
-
-        return s3.getUrl(bucketName, key).getPath();
     }
+
+    private void save(BufferedImage image, String key) throws IOException {
+        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+            ImageIO.write(image, fileType, os);
+            byte[] buffer = os.toByteArray();
+            try (InputStream is = new ByteArrayInputStream(buffer)) {
+                ObjectMetadata meta = new ObjectMetadata();
+                meta.setContentLength(buffer.length);
+                meta.setContentType("image/" + fileType);
+                s3.putObject(bucketName, key, is, meta);
+            }
+        }
+    }
+
 }

@@ -1,10 +1,12 @@
 package image.to.conway.api;
 
-import javax.ws.rs.core.Response;
+import org.springframework.http.ResponseEntity;
+
+import java.util.List;
 
 public interface IGameController {
 
-    Response uploadImage(String url, int width, int height);
-    Response iterate(String url, int iterations);
+    ResponseEntity<String> uploadImage(String url, int width, int height);
+    ResponseEntity<List<String>> iterate(String url, int iterations);
 
 }

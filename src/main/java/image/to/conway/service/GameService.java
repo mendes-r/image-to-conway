@@ -42,7 +42,7 @@ public class GameService {
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
             List<String> urls = exportGrids(result);
             return Optional.ofNullable(urls);
-        } catch (IllegalArgumentException exception) {
+        } catch (Exception exception) {
             logger.warning("Iteration was not possible: " + exception.getMessage());
             return Optional.empty();
         }

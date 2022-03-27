@@ -37,11 +37,13 @@ public class AppConfig {
 
     @Bean
     public Logger logger() {
-        return Logger.getLogger("logger");
+        return Logger.getLogger("LOGGER");
     }
+
 
     @Bean
     public AmazonS3 s3() {
+
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(s3Endpoint, region);
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
 

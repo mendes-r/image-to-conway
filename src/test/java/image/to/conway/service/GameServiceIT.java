@@ -24,7 +24,7 @@ class GameServiceIT {
     @Test
     void playGame_success() {
         // arrange
-        int iterations = 10;
+        int iterations = 2;
 
         // act
         Optional<List<String>> optional = service.iterate(firstUrl, iterations);

@@ -5,17 +5,16 @@ import image.to.conway.service.ImageService;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.core.Response;
+import java.util.List;
 import java.util.logging.Logger;
 
 @RestController
-@Path("/game")
 @RequiredArgsConstructor
 public class GameController implements IGameController {
 
@@ -35,12 +34,12 @@ public class GameController implements IGameController {
      * @param heightRatio ratio
      *@return Http response with uploaded image
      */
-    @POST
-    @Path("/upload")
+    @PostMapping("/upload")
     @Override
-    public Response uploadImage(String url, int widthRatio, int heightRatio) {
-        logger.info("Image upload from " + url);
-        return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
+    public ResponseEntity<String> uploadImage(@RequestParam String url, @RequestParam int widthRatio, @RequestParam int heightRatio) {
+        // TODO should the image be uploaded or just start the game without saving the original image?
+        logger.info("Starting image upload from " + url);
+        return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 
     /**
@@ -49,10 +48,10 @@ public class GameController implements IGameController {
      * @param iterations number of iterations
      * @return Http response with the images of the iterations
      */
-    @GET
+    @GetMapping("/iterate")
     @Override
-    public Response iterate(@PathParam("url") String url, @PathParam("iterations") int iterations) {
-        logger.info("Start iteration " + iterations + " number of times, beginning with image " + url);
-        return gameService.iterate(url, iterations).map(s -> Response.ok(s).build()).orElse(Response.status(400).build());
+    public ResponseEntity<List<String>> iterate(@RequestParam String url, @RequestParam int iterations) {
+        logger.info("Starting iterations: " + iterations + " number of times, beginning with image from " + url);
+        return gameService.iterate(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 }

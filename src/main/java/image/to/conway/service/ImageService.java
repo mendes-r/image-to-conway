@@ -37,8 +37,8 @@ public class ImageService {
             image = filterFactory.getBinaryFilter().filter(image);
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);
-        } catch (IllegalArgumentException exception) {
-            logger.warning("Illegal argument " + exception.getMessage());
+        } catch (Exception exception) {
+            logger.warning("Upload was not possible: " + exception.getMessage());
             return Optional.empty();
         }
     }
