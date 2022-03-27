@@ -28,8 +28,8 @@ class ImageServiceIT {
     @Test
     void uploadImage_success() throws IOException {
         // arrange
-        int widthRatio = 2;
-        int heightRatio = 2;
+        float widthRatio = 2;
+        float heightRatio = 2;
 
         File originalFile = new File(firstUrl);
         BufferedImage originalImage = ImageIO.read(originalFile);
@@ -44,8 +44,8 @@ class ImageServiceIT {
         File resultFile = new File(optional.get());
         assertTrue(resultFile.exists());
         BufferedImage resultImage = ImageIO.read(resultFile);
-        int resultWidth = (originalWidth * widthRatio);
-        int resultHeight = (originalHeight * heightRatio);
+        int resultWidth = (int)(originalWidth * widthRatio);
+        int resultHeight = (int)(originalHeight * heightRatio);
         assertEquals(resultImage.getWidth(), resultWidth);
         assertEquals(resultImage.getHeight(), resultHeight);
     }

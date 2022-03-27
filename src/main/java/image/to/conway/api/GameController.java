@@ -36,7 +36,7 @@ public class GameController implements IGameController {
      */
     @PostMapping("/upload")
     @Override
-    public ResponseEntity<String> uploadImage(@RequestParam String url, @RequestParam int widthRatio, @RequestParam int heightRatio) {
+    public ResponseEntity<String> uploadImage(@RequestParam String url, @RequestParam float widthRatio, @RequestParam float heightRatio) {
         // TODO should the image be uploaded or just start the game without saving the original image?
         logger.info("Starting image upload from " + url);
         return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());

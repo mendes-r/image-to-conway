@@ -30,7 +30,7 @@ public class ImageService {
         this.logger = logger;
     }
 
-    public Optional<String> uploadImage(String url, int widthRatio, int heightRatio) {
+    public Optional<String> uploadImage(String url, float widthRatio, float heightRatio) {
         try {
             BufferedImage image = imageImporter.importImage(url);
             image = resampleFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
