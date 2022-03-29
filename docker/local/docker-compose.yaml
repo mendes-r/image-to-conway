@@ -10,7 +10,7 @@ services:
     environment:
       - SERVICES=s3
       - DEBUG=1
+      - HOST_TMP_FOLDER=/tmp/localstack
       - DATA_DIR=/tmp/localstack/data
     volumes:
       - './.localstack:/tmp/localstack'
-      - '/var/run/docker.sock:/var/run/docker.sock'

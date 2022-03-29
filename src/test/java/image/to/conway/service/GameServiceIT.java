@@ -33,19 +33,6 @@ class GameServiceIT {
         assertTrue(optional.isPresent());
         List<String> urls = optional.get();
         assertEquals(iterations, urls.size());
-        assertTrue(filesExist(urls));
     }
 
-    private boolean filesExist(List<String> urls) {
-        boolean flag = true;
-        for (int i = 0; i < urls.size() && flag; i++) {
-            flag = fileExist(urls.get(i));
-        }
-        return flag;
-    }
-
-    private boolean fileExist(String url) {
-        File file = new File(url);
-        return file.exists();
-    }
 }
