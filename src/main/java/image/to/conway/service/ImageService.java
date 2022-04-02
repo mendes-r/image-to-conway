@@ -32,9 +32,11 @@ public class ImageService {
 
     public Optional<String> uploadImage(String url, float widthRatio, float heightRatio) {
         try {
+            logger.info("Importing image from url: " + url);
             BufferedImage image = imageImporter.importImage(url);
             image = resampleFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
             image = filterFactory.getBinaryFilter().filter(image);
+            logger.info("Exporting result image.");
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);
         } catch (Exception exception) {

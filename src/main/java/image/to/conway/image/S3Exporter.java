@@ -41,8 +41,8 @@ public class S3Exporter implements Exporter {
             save(image, key);
             return s3.getUrl(bucketName, key).getPath();
         } catch (IOException exception) {
-            logger.warning("Image was not uploaded to bucket: " + exception.getMessage());
-            throw new IllegalArgumentException("Image was not exported/saved.");
+            logger.warning("Image was not uploaded into the bucket: " + exception.getMessage());
+            throw new IllegalStateException("Image was not exported/saved.");
         }
 
     }

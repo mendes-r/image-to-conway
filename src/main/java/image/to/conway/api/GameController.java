@@ -4,7 +4,6 @@ import image.to.conway.service.GameService;
 import image.to.conway.service.ImageService;
 import lombok.RequiredArgsConstructor;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -18,16 +17,13 @@ import java.util.logging.Logger;
 @RequiredArgsConstructor
 public class GameController implements IGameController {
 
-    @Autowired
     private final ImageService imageService;
-    @Autowired
     private final GameService gameService;
-    @Autowired
     private final Logger logger;
 
 
     /**
-     * Uploads image.
+     * Uploads image, resize it and turns it into a binary image.
      *
      * @param url    image location
      * @param widthRatio  ratio
@@ -43,15 +39,16 @@ public class GameController implements IGameController {
     }
 
     /**
+     * Get url of all the images of each iteration.
      *
      * @param url image location
      * @param iterations number of iterations
-     * @return Http response with the images of the iterations
+     * @return Http response with the urls of the images of each iteration
      */
     @GetMapping("/iterate")
     @Override
-    public ResponseEntity<List<String>> iterate(@RequestParam String url, @RequestParam int iterations) {
+    public ResponseEntity<List<String>> getIterations(@RequestParam String url, @RequestParam int iterations) {
         logger.info("Starting iterations: " + iterations + " number of times, beginning with image from " + url);
-        return gameService.iterate(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
+        return gameService.getIterations(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 }

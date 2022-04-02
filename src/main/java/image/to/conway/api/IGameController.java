@@ -7,6 +7,6 @@ import java.util.List;
 public interface IGameController {
 
     ResponseEntity<String> uploadImage(String url, float widthRatio, float heightRatio);
-    ResponseEntity<List<String>> iterate(String url, int iterations);
+    ResponseEntity<List<String>> getIterations(String url, int iterations);
 
 }

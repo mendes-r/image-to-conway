@@ -147,3 +147,4 @@ bin
 **/results/*.jpg
 **/results/*.png
 **/.localstack
+**/logs

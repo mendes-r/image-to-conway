@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import java.io.File;
 import java.util.List;
 import java.util.Optional;
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +26,7 @@ class GameServiceIT {
         int iterations = 2;
 
         // act
-        Optional<List<String>> optional = service.iterate(firstUrl, iterations);
+        Optional<List<String>> optional = service.getIterations(firstUrl, iterations);
 
         // assert
         assertTrue(optional.isPresent());

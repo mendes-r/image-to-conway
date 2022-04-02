@@ -32,14 +32,16 @@ public class GameService {
     }
 
     /**
-     * Iterates one level the game.
+     * Iterates n levels of the game.
      *
      * @return url with the location of the new image
      */
-    public Optional<List<String>> iterate(String url, int iterations) {
+    public Optional<List<String>> getIterations(String url, int iterations) {
         try {
+            logger.info("Importing image from url: " + url);
             BufferedImage image = imageImporter.importImage(url);
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
+            logger.info("Exporting result images.");
             List<String> urls = exportGrids(result);
             return Optional.ofNullable(urls);
         } catch (Exception exception) {
