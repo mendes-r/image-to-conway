@@ -1,5 +1,62 @@
 # How to run locally
 
+## Usage
+
+To start the services locally using Docker Compose:
+
+```console
+$ docker-compose up
+```
+
+## Cleanup
+
+Elasticsearch data is persisted inside a volume by default.
+
+In order to entirely shutdown and remove all persisted data, use the following Docker Compose command:
+
+```console
+$ docker-compose down -v
+```
+
+*:information_source: You can also run all services in the background (detached mode) by appending the `-d` flag to the
+above command.*
+
+## Elastic Stack 
+
+Source: https://github.com/deviantony/docker-elk
+
+Based on the official Docker images from Elastic:
+
+* [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/distribution/docker)
+* [Logstash](https://github.com/elastic/logstash/tree/master/docker)
+* [Kibana](https://github.com/elastic/kibana/tree/master/src/dev/build/tasks/os_packages/docker_generator)
+
+By default, the stack exposes the following ports:
+
+* 5044: Logstash Beats input
+* 5001: Logstash TCP input
+* 9600: Logstash monitoring API
+* 9200: Elasticsearch HTTP
+* 9300: Elasticsearch TCP transport
+* 5601: Kibana
+
+### Logstash
+
+### Elasticsearch
+
+To confirm the Elasticsearch is running:
+
+```shell
+$ curl http://localhost:9200 -u elastic:changeme
+```
+
+### Kibana
+
+Open the Kibana web UI by opening <http://localhost:5601> in a web browser and use the following credentials to log in:
+
+* user: *elastic*
+* password: *\<your generated elastic password>*
+
 ## Localstack
 
 First you need to install [Localstack](https://docs.localstack.cloud/):
@@ -8,7 +65,7 @@ First you need to install [Localstack](https://docs.localstack.cloud/):
 $ python3 -m pip install localstack
 ```
 
-## AWS
+### AWS
 
 If you have already AWS CLI configured, please go to the next step.
 
@@ -21,17 +78,7 @@ $ aws configure
 
 All the necessary configuration can be fakes, since we will not interact with the real AWS cloud infrastructure.
 
-## Docker-compose
-
-Run the docker-compose.yaml with the following command:
-
-```shell
-$ docker-compose up
-```
-
-It will create a container with a S3 bucket.
-
-## Access S3
+### Access S3
 
 List buckets:
 
@@ -62,3 +109,4 @@ List bucket content
 ```shell
 $ aws s3 ls s3://<bucket-name> --endpoint-url=http://localhost:4566/
 ```
+

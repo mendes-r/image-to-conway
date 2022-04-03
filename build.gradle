@@ -21,7 +21,9 @@ dependencies {
     // AWS
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
     implementation 'com.amazonaws:aws-java-sdk-s3:1.12.186'
+    // implementation 'io.awspring.cloud:spring-cloud-aws-dependencies:2.4.0'
     // others
+    implementation 'org.apache.logging.log4j:log4j:2.17.2'
     compileOnly 'org.projectlombok:lombok:1.18.22'
     annotationProcessor 'org.projectlombok:lombok:1.18.22'
 }

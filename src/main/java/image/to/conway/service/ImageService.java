@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
 import java.util.Optional;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Logger;
 
 @Service
 public class ImageService {
@@ -32,7 +32,7 @@ public class ImageService {
 
     public Optional<String> uploadImage(String url, float widthRatio, float heightRatio) {
         try {
-            logger.info("Importing image from url: " + url);
+            logger.info("Importing image from url: {}", url);
             BufferedImage image = imageImporter.importImage(url);
             image = resampleFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
             image = filterFactory.getBinaryFilter().filter(image);
@@ -40,7 +40,7 @@ public class ImageService {
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);
         } catch (Exception exception) {
-            logger.warning("Upload was not possible: " + exception.getMessage());
+            logger.warn("Upload was not possible: {}", exception.getMessage());
             return Optional.empty();
         }
     }

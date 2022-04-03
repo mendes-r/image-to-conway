@@ -4,6 +4,7 @@ import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import image.to.conway.utils.NameGenerator;
 import lombok.NoArgsConstructor;
+import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -14,7 +15,6 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.logging.Logger;
 
 @Component("s3-exporter")
 @NoArgsConstructor
@@ -41,7 +41,7 @@ public class S3Exporter implements Exporter {
             save(image, key);
             return s3.getUrl(bucketName, key).getPath();
         } catch (IOException exception) {
-            logger.warning("Image was not uploaded into the bucket: " + exception.getMessage());
+            logger.warn("Image was not uploaded into the bucket: {}", exception.getMessage());
             throw new IllegalStateException("Image was not exported/saved.");
         }
 

@@ -148,3 +148,4 @@ bin
 **/results/*.png
 **/.localstack
 **/logs
+**/esdata

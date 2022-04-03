@@ -12,7 +12,7 @@ import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
-import java.util.logging.Logger;
+import org.apache.logging.log4j.Logger;
 import java.util.stream.Collectors;
 
 @Service
@@ -38,14 +38,14 @@ public class GameService {
      */
     public Optional<List<String>> getIterations(String url, int iterations) {
         try {
-            logger.info("Importing image from url: " + url);
+            logger.info("Importing image from url: {}", url);
             BufferedImage image = imageImporter.importImage(url);
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
             logger.info("Exporting result images.");
             List<String> urls = exportGrids(result);
             return Optional.ofNullable(urls);
         } catch (Exception exception) {
-            logger.warning("Iteration was not possible: " + exception.getMessage());
+            logger.warn("Iteration was not possible: {}", exception.getMessage());
             return Optional.empty();
         }
     }
