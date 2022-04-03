@@ -1,10 +1,13 @@
+import java.awt.Color
+
 plugins {
     id 'java'
     id "org.springframework.boot" version "2.0.1.RELEASE"
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
+    id "com.palantir.docker" version "0.22.1"
 }
 group = 'image.to.conway'
-version = '0.1'
+version = '0.2.0'
 description = 'image-to-conway'
 sourceCompatibility = '11'
 
@@ -20,7 +23,7 @@ dependencies {
     testCompile('org.junit.jupiter:junit-jupiter:5.8.2')
     // AWS
     implementation platform('com.amazonaws:aws-java-sdk-bom:1.11.1000')
-    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.186'
+    implementation 'com.amazonaws:aws-java-sdk-s3:1.12.187'
     // implementation 'io.awspring.cloud:spring-cloud-aws-dependencies:2.4.0'
     // others
     implementation 'org.apache.logging.log4j:log4j:2.17.2'
@@ -51,5 +54,11 @@ task unitTests(type: Test) {
     }
 }
 
+docker {
+    name "${project.name}:${project.version}"
+    dockerfile file('./docker/Dockerfile')
+    files './docker/entrypoint.sh', "./build/libs/${project.name}-${project.version}.jar"
+    noCache true
+}
 
 
