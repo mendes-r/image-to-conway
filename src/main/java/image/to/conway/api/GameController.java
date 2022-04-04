@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
-import org.apache.logging.log4j.Logger;
+import org.slf4j.Logger;
 
 @RestController
 @RequiredArgsConstructor
