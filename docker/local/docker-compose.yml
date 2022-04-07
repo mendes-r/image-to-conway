@@ -75,22 +75,22 @@ services:
     depends_on:
       - elasticsearch
 
-  localstack:
-    image: localstack/localstack:latest
-    container_name: s3-local
-    ports:
-      - "4572:4572"
-      - "4566:4566"
-      - "8083:8080"
-    environment:
-      - SERVICES=s3
-      - DEBUG=1
-      - HOST_TMP_FOLDER=/tmp/localstack
-      - DATA_DIR=/tmp/localstack/data
-    volumes:
-      - './.localstack:/tmp/localstack'
-    networks:
-      - image2conway-network
+#  localstack:
+#    image: localstack/localstack:latest
+#    container_name: s3-local
+#    ports:
+#      - "4572:4572"
+#      - "4566:4566"
+#      - "8083:8080"
+#    environment:
+#      - SERVICES=s3
+#      - DEBUG=1
+#      - HOST_TMP_FOLDER=/tmp/localstack
+#      - DATA_DIR=/tmp/localstack/data
+#    volumes:
+#      - './.localstack:/tmp/localstack'
+#    networks:
+#      - image2conway-network
 
 networks:
   image2conway-network:
