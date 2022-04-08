@@ -5,6 +5,7 @@ import image.to.conway.service.ImageService;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,7 +22,6 @@ public class GameController implements IGameController {
     private final ImageService imageService;
     private final GameService gameService;
 
-
     /**
      * Uploads image, resize it and turns it into a binary image.
      *
@@ -33,8 +33,8 @@ public class GameController implements IGameController {
     @PostMapping("/upload")
     @Override
     public ResponseEntity<String> uploadImage(@RequestParam String url, @RequestParam float widthRatio, @RequestParam float heightRatio) {
-        // TODO should the image be uploaded or just start the game without saving the original image?
-        log.info("Starting image upload from {}", url);
+        MDC.put("src-url", url);
+        log.info("Starting upload.");
         return imageService.uploadImage(url, widthRatio, heightRatio).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 
@@ -48,7 +48,8 @@ public class GameController implements IGameController {
     @GetMapping("/iterate")
     @Override
     public ResponseEntity<List<String>> getIterations(@RequestParam String url, @RequestParam int iterations) {
-        log.info("Starting iterations: {} number of times, beginning with image from {}", iterations, url);
+        MDC.put("src-url", url);
+        log.info("Starting iterations: {} number of times.", iterations);
         return gameService.getIterations(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 }

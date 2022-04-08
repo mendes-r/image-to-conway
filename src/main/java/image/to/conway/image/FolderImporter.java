@@ -10,7 +10,7 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
-@Component
+@Component("folder-importer")
 @NoArgsConstructor
 public class FolderImporter implements Importer {
 

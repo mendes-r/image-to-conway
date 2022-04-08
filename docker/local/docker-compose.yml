@@ -33,16 +33,6 @@ services:
     networks:
       - i2c
 
-#  promtail:
-#    image: grafana/promtail:${PROMTAIL_VERSION}
-#    container_name: promtail-service
-#    volumes:
-#      - ../../logs:/var/log/
-#      - ./config/promtail:/etc/promtail
-#    command: -config.file=/etc/promtail/promtail.yml
-#    networks:
-#      - i2c
-
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION}
     container_name: grafana-service

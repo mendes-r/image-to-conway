@@ -7,6 +7,7 @@ import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
 import image.to.conway.image.Exporter;
+import image.to.conway.image.Importer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +34,11 @@ public class AppConfig {
     @Bean
     public Exporter selectedExporter(@Value("${app.exporter}") String qualifier) {
         return (Exporter) context.getBean(qualifier);
+    }
+
+    @Bean
+    public Importer selectedImporter(@Value("${app.importer}") String qualifier) {
+        return (Importer) context.getBean(qualifier);
     }
 
     @Bean

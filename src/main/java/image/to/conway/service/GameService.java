@@ -23,8 +23,9 @@ public class GameService {
     private final Importer imageImporter;
     private final Exporter imageExporter;
 
+
     @Autowired
-    public GameService(Game game, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public GameService(Game game, @Qualifier("selectedImporter") Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
         this.game = game;
         this.imageImporter = imageImporter;
         this.imageExporter = imageExporter;
@@ -37,10 +38,10 @@ public class GameService {
      */
     public Optional<List<String>> getIterations(String url, int iterations) {
         try {
-            log.info("Importing image from url: {}", url);
+            log.info("Importing and iterating the image.");
             BufferedImage image = imageImporter.importImage(url);
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
-            log.info("Exporting result images.");
+            log.info("Exporting final images.");
             List<String> urls = exportGrids(result);
             return Optional.ofNullable(urls);
         } catch (Exception exception) {

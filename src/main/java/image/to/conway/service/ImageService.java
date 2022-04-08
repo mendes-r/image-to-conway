@@ -1,6 +1,7 @@
 package image.to.conway.service;
 
 import image.to.conway.image.Exporter;
+import image.to.conway.image.FolderImporter;
 import image.to.conway.image.Importer;
 import image.to.conway.image.filter.FilterFactory;
 import image.to.conway.image.resample.ResampleFactory;
@@ -19,10 +20,10 @@ public class ImageService {
     private final FilterFactory filterFactory;
     private final ResampleFactory resampleFactory;
     private final Exporter imageExporter;
-    private final Importer imageImporter;
+    private final FolderImporter imageImporter;
 
     @Autowired
-    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, FolderImporter imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
         this.filterFactory = filterFactory;
         this.resampleFactory = resampleFactory;
         this.imageImporter = imageImporter;
@@ -31,11 +32,11 @@ public class ImageService {
 
     public Optional<String> uploadImage(String url, float widthRatio, float heightRatio) {
         try {
-            log.info("Importing image from url: {}", url);
+            log.info("Importing, resizing and filtering image.");
             BufferedImage image = imageImporter.importImage(url);
             image = resampleFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
             image = filterFactory.getBinaryFilter().filter(image);
-            log.info("Exporting result image.");
+            log.info("Exporting final image.");
             String saveUrl = imageExporter.exportImage(image);
             return Optional.of(saveUrl);
         } catch (Exception exception) {
