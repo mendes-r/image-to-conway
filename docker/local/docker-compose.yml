@@ -5,22 +5,22 @@ networks:
 
 services:
 
-#  localstack:
-#    image: localstack/localstack:latest
-#    container_name: s3-local
-#    ports:
-#      - "4572:4572"
-#      - "4566:4566"
-#      - "8083:8080"
-#    environment:
-#      - SERVICES=s3
-#      - DEBUG=1
-#      - HOST_TMP_FOLDER=/tmp/localstack
-#      - DATA_DIR=/tmp/localstack/data
-#    volumes:
-#      - './.localstack:/tmp/localstack'
-#    networks:
-#      - i2c
+  localstack:
+    image: localstack/localstack:latest
+    container_name: s3-local
+    ports:
+      - "4572:4572"
+      - "4566:4566"
+      - "8083:8080"
+    environment:
+      - SERVICES=s3
+      - DEBUG=1
+      - HOST_TMP_FOLDER=/tmp/localstack
+      - DATA_DIR=/tmp/localstack/data
+    volumes:
+      - './.localstack:/tmp/localstack'
+    networks:
+      - i2c
 
   loki:
     image: grafana/loki:${LOKI_VERSION}
@@ -33,15 +33,15 @@ services:
     networks:
       - i2c
 
-  promtail:
-    image: grafana/promtail:${PROMTAIL_VERSION}
-    container_name: promtail-service
-    volumes:
-      - ../../logs:/var/log/
-      - ./config/promtail:/etc/promtail
-    command: -config.file=/etc/promtail/promtail.yml
-    networks:
-      - i2c
+#  promtail:
+#    image: grafana/promtail:${PROMTAIL_VERSION}
+#    container_name: promtail-service
+#    volumes:
+#      - ../../logs:/var/log/
+#      - ./config/promtail:/etc/promtail
+#    command: -config.file=/etc/promtail/promtail.yml
+#    networks:
+#      - i2c
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION}

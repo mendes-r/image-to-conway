@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 import java.awt.image.BufferedImage;
 import java.util.List;
 import java.util.Optional;
-import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 @Service
