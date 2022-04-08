@@ -12,7 +12,7 @@ import java.io.IOException;
 
 @Component("folder-exporter")
 @NoArgsConstructor
-public class FolderExporter implements Exporter {
+public class DirectoryExporter implements Exporter {
 
     @Value("${app.save.to.url}")
     String saveToURL;

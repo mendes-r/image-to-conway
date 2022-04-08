@@ -1,7 +1,7 @@
 package image.to.conway.service;
 
 import image.to.conway.image.Exporter;
-import image.to.conway.image.FolderImporter;
+import image.to.conway.image.DirectoryImporter;
 import image.to.conway.image.Importer;
 import image.to.conway.image.filter.FilterFactory;
 import image.to.conway.image.resample.ResampleFactory;
@@ -20,10 +20,10 @@ public class ImageService {
     private final FilterFactory filterFactory;
     private final ResampleFactory resampleFactory;
     private final Exporter imageExporter;
-    private final FolderImporter imageImporter;
+    private final Importer imageImporter;
 
     @Autowired
-    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, FolderImporter imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, @Qualifier("folder-importer") Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
         this.filterFactory = filterFactory;
         this.resampleFactory = resampleFactory;
         this.imageImporter = imageImporter;

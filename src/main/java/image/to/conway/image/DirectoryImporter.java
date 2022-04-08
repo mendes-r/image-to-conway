@@ -12,7 +12,7 @@ import java.net.URL;
 
 @Component("folder-importer")
 @NoArgsConstructor
-public class FolderImporter implements Importer {
+public class DirectoryImporter implements Importer {
 
     /**
      * Deals with the url 2 BufferedImage logic
