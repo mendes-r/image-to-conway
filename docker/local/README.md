@@ -10,9 +10,9 @@ $ docker-compose up
 
 ## Cleanup
 
-Elasticsearch data is persisted inside a volume by default.
+Some data is persisted inside a volume by default.
 
-In order to entirely shutdown and remove all persisted data, use the following Docker Compose command:
+In order to entirely shut down and remove all persisted data, use the following Docker Compose command:
 
 ```console
 $ docker-compose down -v
@@ -21,41 +21,22 @@ $ docker-compose down -v
 *:information_source: You can also run all services in the background (detached mode) by appending the `-d` flag to the
 above command.*
 
-## Elastic Stack 
+## Grafana Loki and Promtail
 
-Source: https://github.com/deviantony/docker-elk
+Source: https://www.springcloud.io/post/2022-02/springboot-loki-1/#gsc.tab=0
 
-Based on the official Docker images from Elastic:
+* [Grafana](https://github.com/grafana/grafana)
+* [Loki](https://github.com/grafana/loki)
+* Promtail
 
-* [Elasticsearch](https://github.com/elastic/elasticsearch/tree/master/distribution/docker)
-* [Logstash](https://github.com/elastic/logstash/tree/master/docker)
-* [Kibana](https://github.com/elastic/kibana/tree/master/src/dev/build/tasks/os_packages/docker_generator)
+Open Grafana on your browser http://localhost:3000
 
-By default, the stack exposes the following ports:
+Add Loki and your data source
 
-* 5044: Logstash Beats input
-* 5001: Logstash TCP input
-* 9600: Logstash monitoring API
-* 9200: Elasticsearch HTTP
-* 9300: Elasticsearch TCP transport
-* 5601: Kibana
-
-### Logstash
-
-### Elasticsearch
-
-To confirm the Elasticsearch is running:
-
-```shell
-$ curl http://localhost:9200 -u elastic:changeme
+Then explore your logs by entering this query: 
 ```
-
-### Kibana
-
-Open the Kibana web UI by opening <http://localhost:5601> in a web browser and use the following credentials to log in:
-
-* user: *elastic*
-* password: *\<your generated elastic password>*
+{filename="/var/log/<log-file-name>.log"}
+```
 
 ## Localstack
 

@@ -36,12 +36,6 @@ public class AppConfig {
     }
 
     @Bean
-    public Logger logger() {
-        return LoggerFactory.getLogger("LOGGER");
-    }
-
-
-    @Bean
     public AmazonS3 s3() {
 
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(s3Endpoint, region);

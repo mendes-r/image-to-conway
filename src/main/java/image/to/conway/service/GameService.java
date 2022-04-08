@@ -5,6 +5,7 @@ import image.to.conway.game.Game;
 import image.to.conway.image.Exporter;
 import image.to.conway.image.Importer;
 import image.to.conway.utils.GridUtils;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -16,19 +17,18 @@ import org.slf4j.Logger;
 import java.util.stream.Collectors;
 
 @Service
+@Slf4j
 public class GameService {
 
     private final Game game;
     private final Importer imageImporter;
     private final Exporter imageExporter;
-    private final Logger logger;
 
     @Autowired
-    public GameService(Game game, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter, Logger logger) {
+    public GameService(Game game, Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
         this.game = game;
         this.imageImporter = imageImporter;
         this.imageExporter = imageExporter;
-        this.logger = logger;
     }
 
     /**
@@ -38,14 +38,14 @@ public class GameService {
      */
     public Optional<List<String>> getIterations(String url, int iterations) {
         try {
-            logger.info("Importing image from url: {}", url);
+            log.info("Importing image from url: {}", url);
             BufferedImage image = imageImporter.importImage(url);
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
-            logger.info("Exporting result images.");
+            log.info("Exporting result images.");
             List<String> urls = exportGrids(result);
             return Optional.ofNullable(urls);
         } catch (Exception exception) {
-            logger.warn("Iteration was not possible: {}", exception.getMessage());
+            log.warn("Iteration was not possible: {}", exception.getMessage());
             return Optional.empty();
         }
     }
