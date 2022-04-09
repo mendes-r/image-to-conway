@@ -14,8 +14,8 @@
             <!-- daily rollover -->
             <fileNamePattern>${app.log.file}.%d{yyyy-MM-dd}.gz</fileNamePattern>
 
-            <!-- keep 30 days' worth of history capped at 3GB total size -->
-            <maxHistory>30</maxHistory>
+            <!-- keep 5 days' worth of history capped at 1GB total size -->
+            <maxHistory>5</maxHistory>
             <totalSizeCap>1GB</totalSizeCap>
         </rollingPolicy>
         <encoder>
@@ -29,7 +29,7 @@
         </http>
         <format>
             <label>
-                <pattern>app=my-app,host=${HOSTNAME},level=%level,logger=%logger{20}</pattern>
+                <pattern>app=image2conway,host=${HOSTNAME},level=%level,logger=%logger{20}</pattern>
             </label>
             <message>
                 <pattern>l=%level h=${HOSTNAME} c=%logger{20} t=%thread | %msg %ex</pattern>

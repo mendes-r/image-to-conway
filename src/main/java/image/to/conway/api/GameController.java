@@ -1,5 +1,6 @@
 package image.to.conway.api;
 
+import com.amazonaws.auth.policy.Resource;
 import image.to.conway.service.GameService;
 import image.to.conway.service.ImageService;
 import lombok.RequiredArgsConstructor;

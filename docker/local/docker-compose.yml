@@ -40,6 +40,9 @@ services:
       - "3000:3000"
     volumes:
       - ./config/grafana/provisioning/:/etc/grafana/provisioning/
+    environment:
+      GF_SECURITY_ADMIN_USER: admin
+      GF_SECURITY_ADMIN_PASSWORD: 1234
     restart: always
     networks:
       - i2c

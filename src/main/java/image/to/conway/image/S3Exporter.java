@@ -1,6 +1,8 @@
 package image.to.conway.image;
 
+import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import image.to.conway.utils.NameGenerator;
 import lombok.RequiredArgsConstructor;
@@ -27,6 +29,8 @@ public class S3Exporter implements Exporter {
     private String bucketName;
     @Value("${app.file.type}")
     private String fileType;
+    @Value("${aws.url.expiration}")
+    private long expirationExtension;
 
     @Override
     public String exportImage(BufferedImage image) {
@@ -38,12 +42,24 @@ public class S3Exporter implements Exporter {
         try {
             String key = NameGenerator.getAFileName(fileType);
             save(image, key);
-            return s3.getUrl(bucketName, key).getPath();
+            return s3.generatePresignedUrl(getPresignedUrlRequest(bucketName, key)).toString();
         } catch (IOException exception) {
             log.warn("Image was not uploaded into the bucket: {}", exception.getMessage());
             throw new IllegalStateException("Image was not exported/saved.");
         }
 
+    }
+
+    private GeneratePresignedUrlRequest getPresignedUrlRequest(String bucketName, String key) {
+        java.util.Date expiration = new java.util.Date();
+        long milliSeconds = expiration.getTime();
+        milliSeconds += expirationExtension;
+        expiration.setTime(milliSeconds);
+        GeneratePresignedUrlRequest generatePresignedUrlRequest = new GeneratePresignedUrlRequest(bucketName,
+                key);
+        generatePresignedUrlRequest.setMethod(HttpMethod.GET);
+        generatePresignedUrlRequest.setExpiration(expiration);
+        return generatePresignedUrlRequest;
     }
 
     private void save(BufferedImage image, String key) throws IOException {
