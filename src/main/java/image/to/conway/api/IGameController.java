@@ -8,5 +8,6 @@ public interface IGameController {
 
     ResponseEntity<String> uploadImage(String url, float widthRatio, float heightRatio);
     ResponseEntity<List<String>> getIterations(String url, int iterations);
+    ResponseEntity<String> getGif(String url, int iterations);
 
 }

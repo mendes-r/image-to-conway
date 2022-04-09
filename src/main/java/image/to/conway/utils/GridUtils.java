@@ -15,28 +15,6 @@ public final class GridUtils {
     }
 
     /**
-     * Prints a given grid to the CLI.
-     *
-     * @param mask binary grid
-     */
-    @Deprecated
-    public static void printToCLI(boolean[][] mask) {
-        int height = mask.length;
-        int width = mask[0].length;
-        for (int i = 0; i < height; i++) {
-            for (int j = 0; j < width; j++) {
-                if (mask[i][j]) {
-                    System.out.print("x ");
-                } else {
-                    System.out.print("o ");
-                }
-
-            }
-            System.out.print("\n");
-        }
-    }
-
-    /**
      * Transforms a binary image into a matrix of Cells.
      * Each Cell has an instance variable that tells if the corresponding image pixel is black or white.
      *

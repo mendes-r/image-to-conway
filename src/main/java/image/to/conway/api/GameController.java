@@ -1,6 +1,5 @@
 package image.to.conway.api;
 
-import com.amazonaws.auth.policy.Resource;
 import image.to.conway.service.GameService;
 import image.to.conway.service.ImageService;
 import lombok.RequiredArgsConstructor;
@@ -26,10 +25,10 @@ public class GameController implements IGameController {
     /**
      * Uploads image, resize it and turns it into a binary image.
      *
-     * @param url    image location
+     * @param url         image location
      * @param widthRatio  ratio
      * @param heightRatio ratio
-     *@return Http response with uploaded image
+     * @return Http response with uploaded image
      */
     @PostMapping("/upload")
     @Override
@@ -42,7 +41,7 @@ public class GameController implements IGameController {
     /**
      * Get url of all the images of each iteration.
      *
-     * @param url image location
+     * @param url        image location
      * @param iterations number of iterations
      * @return Http response with the urls of the images of each iteration
      */
@@ -52,5 +51,20 @@ public class GameController implements IGameController {
         MDC.put("src-url", url);
         log.info("Starting iterations: {} number of times.", iterations);
         return gameService.getIterations(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
+    }
+
+    /**
+     * Get url of a gif file with all iterations.
+     *
+     * @param url        image location
+     * @param iterations number of iterations
+     * @return Http response with the url of the gif file with the iterations
+     */
+    @GetMapping("/gif")
+    @Override
+    public ResponseEntity<String> getGif(@RequestParam String url, @RequestParam int iterations) {
+        MDC.put("src-url", url);
+        log.info("Starting iterations: {} number of times for gif generation", iterations);
+        return gameService.getGif(url, iterations).map(s -> ResponseEntity.ok().body(s)).orElse(ResponseEntity.badRequest().build());
     }
 }
