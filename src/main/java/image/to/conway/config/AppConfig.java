@@ -6,10 +6,8 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
-import image.to.conway.image.Exporter;
-import image.to.conway.image.Importer;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import image.to.conway.repository.RepositoryApi;
+import image.to.conway.importer.Importer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.ApplicationContext;
@@ -32,8 +30,8 @@ public class AppConfig {
 
 
     @Bean
-    public Exporter selectedExporter(@Value("${app.exporter}") String qualifier) {
-        return (Exporter) context.getBean(qualifier);
+    public RepositoryApi selectedRepository(@Value("${app.repository}") String qualifier) {
+        return (RepositoryApi) context.getBean(qualifier);
     }
 
     @Bean

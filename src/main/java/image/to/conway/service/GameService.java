@@ -2,9 +2,9 @@ package image.to.conway.service;
 
 import image.to.conway.entities.Grid;
 import image.to.conway.game.Game;
-import image.to.conway.image.Exporter;
+import image.to.conway.repository.RepositoryApi;
 import image.to.conway.image.GifMaker;
-import image.to.conway.image.Importer;
+import image.to.conway.importer.Importer;
 import image.to.conway.utils.GridUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
-import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -23,14 +22,13 @@ public class GameService {
 
     private final Game game;
     private final Importer imageImporter;
-    private final Exporter imageExporter;
-
+    private final RepositoryApi repository;
 
     @Autowired
-    public GameService(Game game, @Qualifier("selectedImporter") Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public GameService(Game game, @Qualifier("selectedImporter") Importer imageImporter, @Qualifier("selectedRepository") RepositoryApi repository) {
         this.game = game;
         this.imageImporter = imageImporter;
-        this.imageExporter = imageExporter;
+        this.repository = repository;
     }
 
     /**
@@ -38,10 +36,10 @@ public class GameService {
      *
      * @return url with the location of the new image
      */
-    public Optional<List<String>> getIterations(String url, int iterations) {
+    public Optional<List<String>> getIterations(String key, int iterations) {
         try {
             log.info("Importing and iterating the image.");
-            BufferedImage image = imageImporter.importImage(url);
+            BufferedImage image = repository.getImage(key);
             List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
             log.info("Exporting final images.");
             // TODO for gifs this shouldn't be necessary: saving to s3 all the iterations
@@ -54,7 +52,7 @@ public class GameService {
     }
 
     private List<String> exportGrids(List<Grid> grids) {
-        return grids.stream().map(GridUtils::gridToImage).map(imageExporter::exportImage).collect(Collectors.toList());
+        return grids.stream().map(GridUtils::gridToImage).map(repository::saveImage).collect(Collectors.toList());
     }
 
     public Optional<String> getGif(String url, int iterations) {

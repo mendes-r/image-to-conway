@@ -1,6 +1,6 @@
 package image.to.conway.image.resample;
 
-import image.to.conway.image.Importer;
+import image.to.conway.importer.Importer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

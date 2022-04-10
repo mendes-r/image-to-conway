@@ -1,8 +1,7 @@
 package image.to.conway.service;
 
-import image.to.conway.image.Exporter;
-import image.to.conway.image.DirectoryImporter;
-import image.to.conway.image.Importer;
+import image.to.conway.repository.RepositoryApi;
+import image.to.conway.importer.Importer;
 import image.to.conway.image.filter.FilterFactory;
 import image.to.conway.image.resample.ResampleFactory;
 import lombok.extern.slf4j.Slf4j;
@@ -19,15 +18,15 @@ public class ImageService {
 
     private final FilterFactory filterFactory;
     private final ResampleFactory resampleFactory;
-    private final Exporter imageExporter;
+    private final RepositoryApi repository;
     private final Importer imageImporter;
 
     @Autowired
-    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, @Qualifier("folder-importer") Importer imageImporter, @Qualifier("selectedExporter") Exporter imageExporter) {
+    public ImageService(FilterFactory filterFactory, ResampleFactory resampleFactory, @Qualifier("selectedImporter") Importer imageImporter, @Qualifier("selectedRepository") RepositoryApi repository) {
         this.filterFactory = filterFactory;
         this.resampleFactory = resampleFactory;
         this.imageImporter = imageImporter;
-        this.imageExporter = imageExporter;
+        this.repository = repository;
     }
 
     public Optional<String> uploadImage(String url, float widthRatio, float heightRatio) {
@@ -37,7 +36,7 @@ public class ImageService {
             image = resampleFactory.getBilinearResize().resize(image, widthRatio, heightRatio);
             image = filterFactory.getBinaryFilter().filter(image);
             log.info("Exporting final image.");
-            String saveUrl = imageExporter.exportImage(image);
+            String saveUrl = repository.saveImage(image);
             return Optional.of(saveUrl);
         } catch (Exception exception) {
             log.warn("Upload was not possible: {}", exception.getMessage());

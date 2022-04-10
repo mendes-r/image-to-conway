@@ -1,4 +1,4 @@
-package image.to.conway.image;
+package image.to.conway.importer;
 
 import java.awt.image.BufferedImage;
 

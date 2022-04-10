@@ -1,7 +1,7 @@
 package image.to.conway.image.filter;
 
 import image.to.conway.constant.RGB;
-import image.to.conway.image.Importer;
+import image.to.conway.importer.Importer;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

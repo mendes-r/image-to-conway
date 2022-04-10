@@ -1,4 +1,4 @@
-package image.to.conway.image;
+package image.to.conway.repository;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
@@ -9,7 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
@@ -18,10 +18,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-@Component("s3-exporter")
+@Repository("s3-repository")
 @Slf4j
 @RequiredArgsConstructor
-public class S3Exporter implements Exporter {
+public class S3Api implements RepositoryApi {
+
 
     @Autowired
     AmazonS3 s3;
@@ -33,11 +34,9 @@ public class S3Exporter implements Exporter {
     private long expirationExtension;
 
     @Override
-    public String exportImage(BufferedImage image) {
+    public String saveImage(BufferedImage image) {
 
-        if (!s3.doesBucketExistV2(bucketName)) {
-            s3.createBucket(bucketName);
-        }
+        if (!s3.doesBucketExistV2(bucketName)) s3.createBucket(bucketName);
 
         try {
             String key = NameGenerator.getAFileName(fileType);
@@ -47,7 +46,17 @@ public class S3Exporter implements Exporter {
             log.warn("Image was not uploaded into the bucket: {}", exception.getMessage());
             throw new IllegalStateException("Image was not exported/saved.");
         }
+    }
 
+    @Override
+    public BufferedImage getImage(String key) {
+        InputStream stream = s3.getObject(bucketName, key).getObjectContent();
+        try {
+            return ImageIO.read(stream);
+        } catch (IOException exception) {
+            log.warn("Image '{}' was not uploaded into the bucket: {}", key, exception.getMessage());
+            throw new IllegalArgumentException("The image was not found in S3 bucket " + bucketName + ".");
+        }
     }
 
     private GeneratePresignedUrlRequest getPresignedUrlRequest(String bucketName, String key) {
@@ -74,5 +83,4 @@ public class S3Exporter implements Exporter {
             }
         }
     }
-
 }
