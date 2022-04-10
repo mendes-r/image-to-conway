@@ -76,7 +76,7 @@ public class Game {
      * @param column column position of the cell that is being analysed
      * @return boolean
      */
-    private boolean isAliveAndHasTwoOrThreeNeighbors(boolean[][] mask, int row, int column) {
+    boolean isAliveAndHasTwoOrThreeNeighbors(boolean[][] mask, int row, int column) {
         return (mask[row][column] && (neighbors(mask, row, column) == 2 || neighbors(mask, row, column) == 3));
     }
 
@@ -88,7 +88,7 @@ public class Game {
      * @param column column position of the cell that is being analysed
      * @return boolean
      */
-    private boolean isDeadButHasThreeNeighbors(boolean[][] mask, int row, int column) {
+    boolean isDeadButHasThreeNeighbors(boolean[][] mask, int row, int column) {
         return (!mask[row][column] && (neighbors(mask, row, column) == 3));
     }
 
