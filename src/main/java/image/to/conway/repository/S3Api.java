@@ -34,17 +34,36 @@ public class S3Api implements RepositoryApi {
 
     @Override
     public String saveImage(BufferedImage image) {
-
-        if (!s3.doesBucketExistV2(bucketName)) s3.createBucket(bucketName);
-
+        initializeBucket();
         try {
             String key = NameGenerator.getAFileName(fileType);
-            save(image, key);
+            try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
+                ImageIO.write(image, fileType, os);
+                byte[] data = os.toByteArray();
+                save(data, key);
+            }
             return s3.generatePresignedUrl(getPresignedUrlRequest(bucketName, key)).toString();
         } catch (IOException exception) {
             log.warn("Image was not uploaded into the bucket: {}", exception.getMessage());
             throw new IllegalStateException("Image was not exported/saved.");
         }
+    }
+
+    @Override
+    public String saveImage(byte[] data) {
+        initializeBucket();
+        String key = NameGenerator.getAFileName("gif");
+        try {
+            save(data, key);
+            return s3.generatePresignedUrl(getPresignedUrlRequest(bucketName, key)).toString();
+        } catch (IOException exception) {
+            log.warn("Image was not uploaded into the bucket: {}", exception.getMessage());
+            throw new IllegalStateException("Image was not exported/saved.");
+        }
+    }
+
+    private void initializeBucket() {
+        if (!s3.doesBucketExistV2(bucketName)) s3.createBucket(bucketName);
     }
 
     @Override
@@ -70,16 +89,13 @@ public class S3Api implements RepositoryApi {
         return generatePresignedUrlRequest;
     }
 
-    private void save(BufferedImage image, String key) throws IOException {
-        try (ByteArrayOutputStream os = new ByteArrayOutputStream()) {
-            ImageIO.write(image, fileType, os);
-            byte[] buffer = os.toByteArray();
-            try (InputStream is = new ByteArrayInputStream(buffer)) {
-                ObjectMetadata meta = new ObjectMetadata();
-                meta.setContentLength(buffer.length);
-                meta.setContentType("image/" + fileType);
-                s3.putObject(bucketName, key, is, meta);
-            }
+    private void save(byte[] data, String key) throws IOException {
+        try (InputStream is = new ByteArrayInputStream(data)) {
+            ObjectMetadata meta = new ObjectMetadata();
+            meta.setContentLength(data.length);
+            meta.setContentType("image/" + fileType);
+            s3.putObject(bucketName, key, is, meta);
         }
     }
+
 }

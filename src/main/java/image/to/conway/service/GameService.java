@@ -11,7 +11,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -52,13 +55,12 @@ public class GameService {
     public Optional<String> getGif(String url, int iterations) {
         log.info("Creating gif.");
         try {
-            BufferedImage gif = gifMaker.fromImages(iterate(url, iterations));
+            byte[] gif = gifMaker.fromImages(iterate(url, iterations));
             String urlGif = repository.saveImage(gif);
             return Optional.of(urlGif);
         } catch (IOException exception) {
-            return Optional.of("fail");
-            // TODO save in S3
-            // TODO return the s3 url from the gif
+            log.warn("Gif was not possible: {}", exception.getMessage());
+            return Optional.empty();
         }
     }
 

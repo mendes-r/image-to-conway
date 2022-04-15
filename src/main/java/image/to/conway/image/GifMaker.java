@@ -11,6 +11,7 @@ import javax.imageio.metadata.IIOMetadata;
 import javax.imageio.metadata.IIOMetadataNode;
 import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.Iterator;
@@ -34,10 +35,10 @@ public class GifMaker {
      *
      * @param images list of images
      */
-    public BufferedImage fromImages(List<BufferedImage> images) throws IOException {
+    public byte[] fromImages(List<BufferedImage> images) throws IOException {
         ImageWriter writer = getWriter();
-        String url = saveToURL + NameGenerator.getAFileName("gif");
-        try (ImageOutputStream imageOS = ImageIO.createImageOutputStream(new File(url))) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try (ImageOutputStream imageOS = ImageIO.createImageOutputStream(baos)) {
             IIOMetadata metadata = getMetadata(writer);
             writer.setOutput(imageOS);
             writer.prepareWriteSequence(null);
@@ -47,7 +48,7 @@ public class GifMaker {
             }
             writer.endWriteSequence();
         }
-        return null;
+        return baos.toByteArray();
     }
 
     private ImageWriter getWriter() throws IIOException {

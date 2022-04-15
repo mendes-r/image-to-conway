@@ -9,7 +9,9 @@ import org.springframework.stereotype.Repository;
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 
 @Repository("file-repository")
 @Slf4j
@@ -27,6 +29,19 @@ public class FileApi implements RepositoryApi{
         File output = new File(url);
         try {
             ImageIO.write(image, fileType, output);
+            return url;
+        } catch (IOException exception) {
+            exception.getStackTrace();
+            throw new IllegalArgumentException("Image was not exported/saved.");
+        }
+    }
+
+    @Override
+    public String saveImage(byte[] data) {
+        String url = saveToURL + NameGenerator.getAFileName("gif");
+        File file = new File(url);
+        try (OutputStream os = new FileOutputStream(file)) {
+            os.write(data);
             return url;
         } catch (IOException exception) {
             exception.getStackTrace();
