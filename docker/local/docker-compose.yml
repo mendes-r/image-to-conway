@@ -1,17 +1,16 @@
 version: "3.7"
 
-networks:
-  i2c:
-
 services:
 
-#  app:
-#    image: image-to-conway:0.2.0
-#    container_name: app
-#    ports:
-#      - "8080:8080"
-#    networks:
-#      - i2c
+  app:
+    image: app-i2c:latest
+    container_name: app
+    environment:
+      - S3_URL=http://localstack:4566
+    ports:
+      - "8080:8080"
+    networks:
+      - i2c
 
   localstack:
     image: localstack/localstack:latest
@@ -53,3 +52,6 @@ services:
       GF_SECURITY_ADMIN_PASSWORD: 1234
     networks:
       - i2c
+
+networks:
+  i2c:

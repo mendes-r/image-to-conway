@@ -80,6 +80,7 @@ sonarqube {
 clean.doFirst {
     delete "logs"
     delete "out"
+    delete "docker/local/.localstack"
     delete fileTree('src/test/resources/results/') {
         include '**/*.jpg'
         include '**/*.png'
