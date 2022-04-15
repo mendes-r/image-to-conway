@@ -65,7 +65,8 @@ public class GameService {
     private List<BufferedImage> iterate(String key, int iterations) {
         log.info("Importing and iterating the image.");
         BufferedImage image = repository.getImage(key);
-        List<Grid> result = this.game.start(GridUtils.imageToGrid(image), iterations);
+        Grid grid = GridUtils.imageToGrid(image);
+        List<Grid> result = this.game.start(grid, iterations);
         return result.stream().map(GridUtils::gridToImage).collect(Collectors.toList());
     }
 

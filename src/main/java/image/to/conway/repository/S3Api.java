@@ -23,7 +23,6 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class S3Api implements RepositoryApi {
 
-
     @Autowired
     AmazonS3 s3;
     @Value("${aws.bucket.name}")

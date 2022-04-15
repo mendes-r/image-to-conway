@@ -28,7 +28,8 @@ public final class GridUtils {
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 Color color = new Color(image.getRGB(i, j));
-                mask[j][i] = color.getRed() == RGB.BLACK.getCode();
+                mask[j][i] = (color.getRed() == RGB.WHITE.getCode());
+                // TODO ensure that all color channels are the same
             }
         }
         return new Grid(mask);
@@ -38,7 +39,6 @@ public final class GridUtils {
         int width = grid.getWidth();
         int height = grid.getHeight();
         BufferedImage image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
-        // create image iterator with bufferedImage (encapsulate)
         for (int i = 0; i < width; i++) {
             for (int j = 0; j < height; j++) {
                 if (grid.cellValue(i, j)) {

@@ -51,6 +51,5 @@ services:
     environment:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: 1234
-    restart: always
     networks:
       - i2c
