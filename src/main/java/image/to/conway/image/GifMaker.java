@@ -4,7 +4,6 @@ import image.to.conway.utils.NameGenerator;
 import lombok.NoArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.springframework.util.StringUtils;
 
 import javax.imageio.*;
 import javax.imageio.metadata.IIOInvalidTreeException;

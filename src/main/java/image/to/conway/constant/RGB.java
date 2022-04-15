@@ -5,13 +5,13 @@ public enum RGB {
     BLACK(0),
     WHITE(255);
 
-    private int rgb;
+    private final int code;
 
-    RGB(int rgb) {
-        this.rgb = rgb;
+    RGB(int code) {
+        this.code = code;
     }
 
     public int getCode() {
-        return rgb;
+        return code;
     }
 }
