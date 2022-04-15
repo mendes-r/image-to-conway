@@ -14,8 +14,6 @@ import javax.imageio.stream.ImageOutputStream;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
-import java.net.URL;
-import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
@@ -32,33 +30,13 @@ public class GifMaker {
 
     /**
      * Creates a gif from a list of images.
-     *
+     * <p>
      * source https://github.com/ha-shine/Giffer
      *
-     * @param files list of images
+     * @param images list of images
      */
-    public void fromFiles(List<String> files) {
-        List<BufferedImage> images = new ArrayList<>();
-        try {
-            for (String file : files) {
-                BufferedImage image = null;
-                // TODO find better way
-                if (StringUtils.startsWithIgnoreCase(file, "http")) {
-                    image = ImageIO.read(new URL(file));
-                } else {
-                    image = ImageIO.read(new File(file));
-                }
-                images.add(image);
-            }
-            fromImages(images);
-        } catch (IOException exception) {
-            // TODO
-        }
-    }
-
-    private void fromImages(List<BufferedImage> images) throws IOException {
+    public BufferedImage fromImages(List<BufferedImage> images) throws IOException {
         ImageWriter writer = getWriter();
-        // TODO saveToUrl is always null, why?
         String url = saveToURL + NameGenerator.getAFileName("gif");
         try (ImageOutputStream imageOS = ImageIO.createImageOutputStream(new File(url))) {
             IIOMetadata metadata = getMetadata(writer);
@@ -70,6 +48,7 @@ public class GifMaker {
             }
             writer.endWriteSequence();
         }
+        return null;
     }
 
     private ImageWriter getWriter() throws IIOException {

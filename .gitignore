@@ -146,6 +146,7 @@ img
 bin
 **/results/*.jpg
 **/results/*.png
+**/results/*.gif
 **/.localstack
 **/logs
 **/esdata

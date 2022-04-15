@@ -5,6 +5,14 @@ networks:
 
 services:
 
+#  app:
+#    image: image-to-conway:0.2.0
+#    container_name: app
+#    ports:
+#      - "8080:8080"
+#    networks:
+#      - i2c
+
   localstack:
     image: localstack/localstack:latest
     container_name: s3-local

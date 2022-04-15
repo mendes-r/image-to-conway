@@ -31,7 +31,7 @@ class GameServiceIT {
         // assert
         assertTrue(optional.isPresent());
         List<String> urls = optional.get();
-        assertEquals(iterations, urls.size());
+        assertEquals(iterations + 1, urls.size()); // the plus one is the source image
     }
 
 }

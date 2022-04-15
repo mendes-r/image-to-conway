@@ -11,6 +11,7 @@ public class Game {
 
     public List<Grid> start(Grid grid, int iterations) {
         List<Grid> list = new ArrayList<>();
+        list.add(grid);
         Grid temp = grid;
         for (int i = 0; i < iterations; i++) {
             Grid result = iterate(temp);

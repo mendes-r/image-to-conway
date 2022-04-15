@@ -3,6 +3,7 @@ plugins {
     id "org.springframework.boot" version "2.0.1.RELEASE"
     id 'io.spring.dependency-management' version '1.0.11.RELEASE'
     id "com.palantir.docker" version "0.22.1"
+    id 'jacoco'
 }
 
 group = 'image.to.conway'
@@ -32,12 +33,28 @@ dependencies {
 
 tasks.named('test') {
     useJUnitPlatform()
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
+    reports {
+        xml {
+            enabled true
+        }
+        csv {
+            enabled false
+        }
+    }
 }
 
 clean.doFirst {
+    delete "logs"
+    delete "out"
     delete fileTree('src/test/resources/results/') {
         include '**/*.jpg'
         include '**/*.png'
+        include '**/*.gif'
     }
 }
 
