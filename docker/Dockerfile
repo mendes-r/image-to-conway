@@ -1,7 +1,7 @@
 FROM openjdk:11
 
-COPY build/libs/*.jar /
-COPY docker/entrypoint.sh /
+COPY *.jar /
+COPY entrypoint.sh /
 
 RUN chmod +x /entrypoint.sh
 

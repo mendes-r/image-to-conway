@@ -53,6 +53,7 @@ public class AppConfig {
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(endpoint)
+                .enablePathStyleAccess()
                 .build();
     }
 }

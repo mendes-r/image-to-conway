@@ -3,46 +3,57 @@ version: "3.7"
 services:
 
   app:
-    image: app-i2c:latest
+    image: image-to-conway:${APP_VERSION}
     container_name: app
+    restart: always
+    links:
+#      https://github.com/localstack/localstack/issues/2631
+      - storage:uploads.storage
     environment:
-      - S3_URL=http://localstack:4566
+      - S3_URL=http://storage:4566
+      - LOKI_URL=http://loki:3100
     ports:
       - "8080:8080"
+    depends_on:
+      - storage
+      - loki
     networks:
-      - i2c
+      - conway-network
 
-  localstack:
+  storage:
     image: localstack/localstack:latest
-    container_name: s3-local
+    container_name: storage
+    restart: always
     ports:
-      - "4572:4572"
+#      - "4572:4572"
       - "4566:4566"
-      - "8083:8080"
+#      - "8083:8080"
     environment:
       - SERVICES=s3
       - DEBUG=1
       - HOST_TMP_FOLDER=/tmp/localstack
       - DATA_DIR=/tmp/localstack/data
+      - LOCALSTACK_HOSTNAME=storage
     volumes:
       - './.localstack:/tmp/localstack'
     networks:
-      - i2c
+      - conway-network
 
   loki:
     image: grafana/loki:${LOKI_VERSION}
-    container_name: loki-service
+    container_name: loki
+    restart: always
     volumes:
       - ./config/loki:/etc/loki
-    ports:
-      - "3100:3100"
+    expose:
+      - "3100"
     command: -config.file=/etc/loki/loki.yml
     networks:
-      - i2c
+      - conway-network
 
   grafana:
     image: grafana/grafana:${GRAFANA_VERSION}
-    container_name: grafana-service
+    container_name: grafana
     ports:
       - "3000:3000"
     volumes:
@@ -51,7 +62,8 @@ services:
       GF_SECURITY_ADMIN_USER: admin
       GF_SECURITY_ADMIN_PASSWORD: 1234
     networks:
-      - i2c
+      - conway-network
 
 networks:
-  i2c:
+  conway-network:
+    driver: bridge

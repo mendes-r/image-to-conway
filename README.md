@@ -20,3 +20,5 @@ The following requirements will give a first hint for the type of user stories a
 
 ## Possible future new functionalities
 This project could be turned into a web-application.
+
+PS: this project is also a playground to learn new tools.

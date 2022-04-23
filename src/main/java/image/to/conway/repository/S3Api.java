@@ -63,7 +63,10 @@ public class S3Api implements RepositoryApi {
     }
 
     private void initializeBucket() {
-        if (!s3.doesBucketExistV2(bucketName)) s3.createBucket(bucketName);
+        if (!s3.doesBucketExistV2(bucketName)) {
+            s3.createBucket(bucketName);
+            log.debug("Bucket {} was created", bucketName);
+        }
     }
 
     @Override
