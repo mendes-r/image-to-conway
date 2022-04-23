@@ -25,9 +25,7 @@ services:
     container_name: storage
     restart: always
     ports:
-#      - "4572:4572"
       - "4566:4566"
-#      - "8083:8080"
     environment:
       - SERVICES=s3
       - DEBUG=1
