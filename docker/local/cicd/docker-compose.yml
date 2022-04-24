@@ -1,0 +1,58 @@
+version: "3.7"
+
+services:
+
+  jenkins:
+    image: jenkins/jenkins
+    container_name: jenkins
+    restart: always
+    ports:
+      - "8089:8080"
+    depends_on:
+      - sonar
+    volumes:
+      - jenkins-vol:/var/jenkins_home
+    networks:
+      - local-cicd
+
+  sonar:
+    image: sonarqube:8.9.8-community
+    container_name: sonar
+    restart: always
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+    environment:
+      SONAR_JDBC_URL: jdbc:postgresql://db:5432/sonar
+      SONAR_JDBC_USERNAME: sonar
+      SONAR_JDBC_PASSWORD: sonar
+    volumes:
+      - sonarqube_data:/opt/sonarqube/data
+      - sonarqube_extensions:/opt/sonarqube/extensions
+      - sonarqube_logs:/opt/sonarqube/logs
+    networks:
+      - local-cicd
+
+  db:
+    image: postgres:12
+    container_name: db
+    environment:
+      POSTGRES_USER: sonar
+      POSTGRES_PASSWORD: sonar
+    volumes:
+      - postgresql:/var/lib/postgresql
+      - postgresql_data:/var/lib/postgresql/data
+    networks:
+      - local-cicd
+
+networks:
+  local-cicd:
+
+volumes:
+  sonarqube_data:
+  sonarqube_extensions:
+  sonarqube_logs:
+  postgresql:
+  postgresql_data:
+  jenkins-vol:
