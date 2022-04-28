@@ -20,29 +20,32 @@ pipeline {
         stage('Sonarqube'){
             environment {
                 SONAR_CREDENTIALS = credentials('sonar-credentials')
+                SONAR_URL='http://sonar:9000'
             }
             steps {
                 echo '||||||||||| Sonar analysis ...'
-                sh './gradlew sonar -Dsonar.host.url=http://sonar:9000 -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
+                sh './gradlew sonar -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
             }
         }
 
         stage('Build Image'){
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 echo '||||||||||| Building Docker image...'
-                sh './gradlew docker'
+                sh './gradlew docker --stacktrace'
             }
         }
 
         stage('Push Docker Image'){
             when {
-                branch 'master'
+                branch 'main'
             }
             steps {
                 echo '||||||||||| Pushing Docker image ...'
+                sh './gradlew dockerTagDockerHub'
+                sh './gradlew dockerPushDockerHub'
             }
         }
     }
@@ -50,8 +53,6 @@ pipeline {
     post {
         always {
             junit 'build/test-results/**/*.xml'
-        }
-        always {
             cleanWs()
         }
     }
