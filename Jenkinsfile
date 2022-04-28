@@ -23,7 +23,7 @@ pipeline {
             }
             steps {
                 echo '||||||||||| Sonar analysis ...'
-                sh './gradlew sonar -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
+                sh './gradlew sonar -Dsonar.host.url=http://sonar:9000 -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
             }
         }
 
