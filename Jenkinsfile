@@ -12,23 +12,23 @@ pipeline {
             }
         }
 
-//         stage('Test'){
-//             steps {
-//                 echo '||||||||||| Testing ...'
-//                 sh './gradlew test'
-//             }
-//         }
+        stage('Test'){
+            steps {
+                echo '||||||||||| Testing ...'
+                sh './gradlew test'
+            }
+        }
 
-//         stage('Sonarqube'){
-//             environment {
-//                 SONAR_CREDENTIALS = credentials('sonar-credentials')
-//                 SONAR_URL='http://sonar:9000'
-//             }
-//             steps {
-//                 echo '||||||||||| Sonar analysis ...'
-//                 sh './gradlew sonar -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
-//             }
-//         }
+        stage('Sonarqube'){
+            environment {
+                SONAR_CREDENTIALS = credentials('sonar-credentials')
+                SONAR_URL='http://sonar:9000'
+            }
+            steps {
+                echo '||||||||||| Sonar analysis ...'
+                sh './gradlew sonar -Dsonar.host.url=$SONAR_URL -Dsonar.login=$SONAR_CREDENTIALS_USR -Dsonar.password=$SONAR_CREDENTIALS_PSW'
+            }
+        }
 
         stage('Build Image'){
             when {
@@ -36,8 +36,7 @@ pipeline {
             }
             steps {
                 echo '||||||||||| Building Docker image...'
-                sh './gradlew clean build -x test -PnoCache=true'
-                sh './gradlew docker --stacktrace'
+                sh './gradlew docker'
             }
         }
 
