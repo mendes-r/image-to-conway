@@ -104,10 +104,10 @@ task unitTests(type: Test) {
 }
 
 docker {
-    name "${project.name}:${project.version}"
+    def dockerHubRepo = System.getenv('DOCKER_HUB_REPO')
+    name dockerHubRepo + "/${project.name}:${project.version}"
     dockerfile file('./docker/Dockerfile')
     files './docker/entrypoint.sh', "./build/libs/${project.name}-${project.version}.jar"
     noCache true
-    def dockerHubRepo = System.getenv('DOCKER_HUB_REPO')
-    tag 'DockerHub', dockerHubRepo + "/image2conway:${project.version}"
+    tag 'DockerHub', dockerHubRepo + "/${project.name}:${project.version}"
 }

@@ -42,10 +42,13 @@ pipeline {
             when {
                 branch 'main'
             }
+            environment {
+                DOCKER_CREDENTIALS = credentials('docker-hub-credentials')
+            }
             steps {
                 echo '||||||||||| Pushing Docker image ...'
-                sh './gradlew dockerTagDockerHub'
-                sh './gradlew dockerPushDockerHub'
+                sh 'docker login -u $DOCKER_CREDENTIALS_USR -p $DOCKER_CREDENTIALS_PSW'
+                sh './gradlew dockerPushDockerHub -x docker'
             }
         }
     }
