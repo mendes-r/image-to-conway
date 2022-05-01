@@ -13,8 +13,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 @ExtendWith(SpringExtension.class)
 @SpringBootTest
@@ -48,5 +47,17 @@ class ImageServiceIT {
         int resultHeight = (int)(originalHeight * heightRatio);
         assertEquals(resultImage.getWidth(), resultWidth);
         assertEquals(resultImage.getHeight(), resultHeight);
+    }
+
+    @Test
+    void uploadImage_Exception() throws IOException {
+        // arrange
+        String fakeUrl = "fake/url";
+
+        // act
+        Optional<String> optional = service.uploadImage(fakeUrl, 2, 2);
+
+        // assert
+        assertTrue(optional.isEmpty());
     }
 }
