@@ -7,6 +7,7 @@ import com.amazonaws.services.s3.model.ObjectMetadata;
 import image.to.conway.utils.NameGenerator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -22,6 +23,7 @@ import java.io.InputStream;
 @RequiredArgsConstructor
 public class S3Api implements RepositoryApi {
 
+    @Autowired
     AmazonS3 s3;
     @Value("${aws.bucket.name}")
     private String bucketName;

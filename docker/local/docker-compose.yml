@@ -3,7 +3,7 @@ version: "3.7"
 services:
 
   app:
-    image: image-to-conway:${APP_VERSION}
+    image: ricardomendes88/image-to-conway:${APP_VERSION}
     container_name: app
     restart: always
     links:
