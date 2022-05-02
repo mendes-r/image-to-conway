@@ -1,7 +1,7 @@
 # Image-to-Conway
 Turn any image into an initial _Conway's Game of life_ grid... and start living!
 
-![](https://raw.githubusercontent.com/mendes-r/image-to-conway/feature/Readme-update/asimov-example.gif)
+![](https://raw.githubusercontent.com/mendes-r/image-to-conway/main/asimov-example.gif)
 
 ## Introduction
 The idea behind this project is to transform any image into a grid for the famous Conway´s Game of Life.
