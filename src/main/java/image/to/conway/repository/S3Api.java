@@ -2,12 +2,13 @@ package image.to.conway.repository;
 
 import com.amazonaws.HttpMethod;
 import com.amazonaws.services.s3.AmazonS3;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import com.amazonaws.services.s3.model.GeneratePresignedUrlRequest;
 import com.amazonaws.services.s3.model.ObjectMetadata;
 import image.to.conway.utils.NameGenerator;
+import lombok.NonNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Repository;
 
@@ -50,6 +51,9 @@ public class S3Api implements RepositoryApi {
 
     @Override
     public String saveImage(byte[] data) {
+        if (data.length == 0) {
+            throw new IllegalArgumentException("Byte array is empty");
+        }
         initializeBucket();
         String key = NameGenerator.getAFileName("gif");
         try {
@@ -70,11 +74,11 @@ public class S3Api implements RepositoryApi {
 
     @Override
     public BufferedImage getImage(String key) {
-        InputStream stream = s3.getObject(bucketName, key).getObjectContent();
         try {
+            InputStream stream = s3.getObject(bucketName, key).getObjectContent();
             return ImageIO.read(stream);
-        } catch (IOException exception) {
-            log.warn("Image '{}' was not uploaded into the bucket: {}", key, exception.getMessage());
+        } catch (IOException | AmazonS3Exception exception) {
+            log.warn("Image '{}' as not found in S3 bucket: {}", key, exception.getMessage());
             throw new IllegalArgumentException("The image was not found in S3 bucket " + bucketName + ".");
         }
     }

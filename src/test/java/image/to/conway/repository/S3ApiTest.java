@@ -6,11 +6,9 @@ import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.client.builder.AwsClientBuilder;
 import com.amazonaws.services.s3.AmazonS3;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.s3.model.AmazonS3Exception;
 import org.junit.Rule;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.TestInstance;
+import org.junit.jupiter.api.*;
 import org.springframework.test.util.ReflectionTestUtils;
 import org.testcontainers.containers.localstack.LocalStackContainer;
 import org.testcontainers.junit.jupiter.Testcontainers;
@@ -21,7 +19,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
@@ -32,6 +30,7 @@ class S3ApiTest {
     String region;
     String bucketName = "bucket";
     DockerImageName localstackImage = DockerImageName.parse("localstack/localstack:latest");
+    String testKey;
 
     @Rule
     public LocalStackContainer localstack = new LocalStackContainer(localstackImage)
@@ -40,8 +39,24 @@ class S3ApiTest {
     RepositoryApi api;
 
     @BeforeAll
-    void setUp() {
+    void setUp() throws IOException {
         localstack.start();
+        AmazonS3 s3 = getS3Client();
+        api = new S3Api(s3);
+
+        ReflectionTestUtils.setField(api, "bucketName", this.bucketName);
+        ReflectionTestUtils.setField(api, "fileType", "jpg");
+        ReflectionTestUtils.setField(api, "expirationExtension", 60000);
+
+        BufferedImage image = ImageIO.read(new File("src/test/resources/imagetests/00.jpg"));
+        String presignUrl = api.saveImage(image);
+        testKey = getKeyFromUrl(presignUrl);
+    }
+
+    private String getKeyFromUrl(String url) {
+        return url.split("\\?")[0].split("/")[4];
+    }
+    private AmazonS3 getS3Client() {
         s3Endpoint = localstack.getEndpointConfiguration(LocalStackContainer.Service.S3).getServiceEndpoint();
         region = localstack.getEndpointConfiguration(LocalStackContainer.Service.S3).getSigningRegion();
         String accessKey = "xxx";
@@ -49,17 +64,12 @@ class S3ApiTest {
 
         AwsClientBuilder.EndpointConfiguration endpoint = new AwsClientBuilder.EndpointConfiguration(s3Endpoint, region);
         AWSCredentials credentials = new BasicAWSCredentials(accessKey, secretKey);
-        AmazonS3 s3 = AmazonS3ClientBuilder
+        return AmazonS3ClientBuilder
                 .standard()
                 .withCredentials(new AWSStaticCredentialsProvider(credentials))
                 .withEndpointConfiguration(endpoint)
                 .enablePathStyleAccess()
                 .build();
-
-        api = new S3Api(s3);
-        ReflectionTestUtils.setField(api, "bucketName", this.bucketName);
-        ReflectionTestUtils.setField(api, "fileType", "jpg");
-        ReflectionTestUtils.setField(api, "expirationExtension", 60000);
     }
 
     @Test
@@ -74,5 +84,54 @@ class S3ApiTest {
         // assert
         assertEquals(s3Endpoint, result[0] + "//" + result[2]);
         assertEquals(bucketName, result[3]);
+    }
+
+    @Test
+    void saveImage_wrongArgument_Null() throws IOException {
+        // arrange
+        BufferedImage image = null;
+
+        // act and assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            api.saveImage(image);
+        });
+    }
+
+    @Test
+    void saveImage_wrongArgument_ZeroBytes() {
+        // arrange
+        byte[] image = {};
+
+        // act and assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            api.saveImage(image);
+        });
+    }
+
+    @Test
+    void getImage_success() throws IOException {
+        // arrange
+        BufferedImage original = ImageIO.read(new File("src/test/resources/imagetests/00.jpg"));
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        // act
+        BufferedImage result = api.getImage(testKey);
+
+        // assert
+        assertNotNull(result);
+        assertEquals(width, result.getWidth());
+        assertEquals(height, result.getHeight());
+    }
+
+    @Test
+    void getImage_keyNotFound() throws IOException {
+        // arrange
+        String invalidKey = "invalid";
+
+        // act and assert
+        assertThrows(IllegalArgumentException.class, () -> {
+            api.getImage(invalidKey);
+        });
     }
 }
