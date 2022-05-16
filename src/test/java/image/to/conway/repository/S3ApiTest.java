@@ -125,7 +125,7 @@ class S3ApiTest {
     }
 
     @Test
-    void getImage_keyNotFound() throws IOException {
+    void getImage_keyNotFound() {
         // arrange
         String invalidKey = "invalid";
 
